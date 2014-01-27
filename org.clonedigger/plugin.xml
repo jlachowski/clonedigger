@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.clonedigger.actionSet"
+            label="Dig clones"
+            visible="true">
+         <menu
+               id="digMenu"
+               label="Clone digger">
+            <separator
+                  name="digGroup">
+            </separator>
+         </menu>
+         <action
+               class="org.clonedigger.actions.DigAction"
+               icon="icons/icon.gif"
+               id="org.clonedigger.actions.digAction"
+               label="Dig clones"
+               menubarPath="digMenu/digGroup"
+               toolbarPath="digGroup"
+               tooltip="Dig clones">
+         </action>
+         <action
+               class="org.clonedigger.actions.UpdateAction"
+               enablesFor="*"
+               id="org.clonedigger.actions.updateAction"
+               label="Update CloneDigger"
+               menubarPath="digMenu/digGroup"
+               tooltip="Update CloneDigger installation">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.clonedigger.ResultBrowser"
+            default="false"
+            id="org.clonedigger.resultbrowser"
+            name="resultbrowser">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            id="org.clonedigger.projectContibution"
+            objectClass="java.lang.Object">
+         <action
+               class="org.clonedigger.actions.DigAction"
+               icon="icons/icon.gif"
+               id="org.clonedigger.projectAction"
+               label="Dig clones"
+               menubarPath="additions">
+         </action>
+      </objectContribution>
+   </extension>
+</plugin>

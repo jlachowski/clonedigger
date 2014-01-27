@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Helloworld Plug-in
+Bundle-SymbolicName: org.clonedigger;singleton:=true
+Bundle-Version: 1.1.8
+Bundle-Activator: org.clonedigger.Activator
+Bundle-Vendor: Clone Digger
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources;bundle-version="3.2.0",
+ org.eclipse.ui.editors;bundle-version="3.2.0",
+ org.eclipse.ui.browser;bundle-version="3.2.0",
+ org.python.pydev;bundle-version="1.3.18"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: org.eclipse.core.filesystem,
+ org.eclipse.jdt.core,
+ org.eclipse.jface.text
+Export-Package: org.clonedigger,
+ org.clonedigger.actions
+Bundle-ActivationPolicy: lazy

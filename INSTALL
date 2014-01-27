@@ -1,0 +1,3 @@
+Use "setup.py install" to install Clone Digger.
+
+You might get "NameError: global name 'log' is not defined". It is a bug caused by distutils. You should remove .svn directory to overpass it.

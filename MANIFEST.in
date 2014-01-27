@@ -1,0 +1,5 @@
+include HISTORY.txt
+include CONTRIBUTORS.txt
+include LICENSE
+recursive-include clonedigger *.py *.txt
+

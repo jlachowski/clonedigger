@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type"><title>CloneDigger Eclipse plugin manual</title>
+
+</head>
+<body>
+<b>Requirements</b>
+<ul>
+<li> Eclipse 3.4 </li>
+</ul>
+<b>Install from SVN</b>
+<p>&nbsp;Go to the update manager (inside the help menu) and
+add update site:
+http://clonedigger.svn.sourceforge.net/svnroot/clonedigger/trunk/org.clonedigger.feature/
+(Eclipse should do the rest)
+</p>
+&nbsp;<img src="SUpdate.gif"><img src="SUpdateAdd.gif">
+<img src="SUpdateInstall.gif">
+<br><b>Using</b>
+<p>Now, you can check your projects for clones. Just run
+clonedigger
+wizard from main menu.</p>
+<img src="Run.gif">
+<p>On the first page of a wizard you may select files to dig,
+choose
+language (for now clonedigger support only java and python) and select
+digging options (fast mode clone size and clone distance). Click "next" button when you will
+ready . </p>
+<img style="width: 444px; height: 414px;" alt="" src="RunFirst.gif">
+<p>On the first run plugin will try to download the last version
+of
+clonedigger from PyPi repository.</p>
+<img src="RunInstall.gif">
+<p>After that you will see the
+console output during the dig phase. When Clone Digger will ready you may press final button.</p>
+<img src="RunDone.gif">
+<p>Now you will see the report. Before each clone there is a "Go
+to this
+fragment in Eclipse" link, you may follow this links to automatically
+find and select clone in eclipse environment.</p>
+<p> <b>Tip</b>: be careful! When you will edit your
+code and
+add some new lines to it report will gone out of sync and "Go to this
+fragment in Eclipse" links will be broken. </p>
+<p> <b>Feature</b>: you may run clonedigger wizard
+from project
+tree, just select desired files or folders by holding {ctrl} button and
+this file will be checked on the first wizard page when it appear. </p>
+<img src="RunPopup.gif"><b><br>Update CloneDigger
+instance</b>
+<p>You can update clonedigger instance in plugin by clicking
+Update
+CloneDigger menu item. CloneDigger will be downloaded next time you run
+the wizard.</p><p><span style="font-style: italic;">by Anatoly Zapadinsky</span></p></body></html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.clonedigger.feature"
+      label="CloneDigger Feature"
+      version="1.1.8"
+      plugin="org.clonedigger">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <license url="http://www.gnu.org/licenses/gpl.html">
+      ...
+   </license>
+
+   <url>
+      <update label="CloneDigger SVN" url="http://clonedigger.svn.sourceforge.net/svnroot/clonedigger/trunk/org.clonedigger.feature/"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.ui.browser"/>
+      <import plugin="org.eclipse.core.filesystem"/>
+      <import plugin="org.eclipse.jface.text"/>
+   </requires>
+
+   <plugin
+         id="org.clonedigger"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>
