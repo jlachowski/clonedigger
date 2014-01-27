@@ -14,7 +14,7 @@
 #    GNU General Public License for more details.
 #
 #   You should have received a copy of the GNU General Public License
-#   along with Clone Digger.  If not, see <http://www.gnu.org/licenses/>. 
+#   along with Clone Digger.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
 import xml.parsers.expat
@@ -42,14 +42,15 @@ class JavaANTLRSourceFile (SourceFile):
                     r.markAsStatement()
                 else:
                     assert(xml_node_name == "node")
-                expat_self.stack[-1].addChild(r)                
+                expat_self.stack[-1].addChild(r)
                 expat_self.stack.append(r)
             def end_element(self, name):
                 self.stack.pop()
 
         tree_file_name  = 'temporary_ast.xml'
-        producer_class_path = os.path.join('.','java_antlr', 'TreeProducer.jar')
-        antlr_class_path = os.path.join('.','antlr_runtime','runtime-2008-01-10.16.jar')
+        current_directory = os.path.realpath(os.path.dirname(__file__))
+        producer_class_path = os.path.join(current_directory,'java_antlr', 'TreeProducer.jar')
+        antlr_class_path = os.path.join(current_directory, 'antlr_runtime', 'runtime-2008-01-10.16.jar')
         if os.name in ['mac', 'posix']:
             class_path_delimeter = ':'
         elif os.name in ['nt', 'dos', 'ce']:
@@ -62,7 +63,7 @@ class JavaANTLRSourceFile (SourceFile):
             s = f.read()
             f.close()
             raise s
-        
+
         self._tree = AbstractSyntaxTree('program')
         handler = ExpatHandler(self._tree, self)
         p = xml.parsers.expat.ParserCreate()
