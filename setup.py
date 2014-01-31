@@ -12,7 +12,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.getcwd(), *rnames)).read()
 
-version = '1.0.1-beta'
+version = '1.0.2-beta'
 
 long_description = read(os.path.join(os.getcwd(), 'clonedigger', 'README.txt'))
 
