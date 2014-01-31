@@ -1,0 +1,2 @@
+This software was originaly written by Peter Bulychev (http://clonedigger.sourceforge.net/authors.html)
+

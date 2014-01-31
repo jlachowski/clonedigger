@@ -1,0 +1,15 @@
+History
+=======
+
+2014/01/31:
+-----------
+MANIFEST.in file update, include:
+- .g
+- .jar
+- .java
+- .tokens
+- .sh
+
+2014/01/27:
+-----------
+Initial clone of http://sourceforge.net/projects/clonedigger/ to github repository
