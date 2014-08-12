@@ -13,7 +13,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.getcwd(), *rnames)).read()
 
-version = '1.0.6'
+version = '1.0.7'
 
 long_description = read('README.md')
 
@@ -40,6 +40,6 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires=['setuptools', 'ez_setup'],
+    install_requires=['setuptools'],
     entry_points=entry_points,
 )
