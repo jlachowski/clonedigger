@@ -210,18 +210,18 @@ class AbstractSyntaxTree:
         return ret    
     def getTokenCount(self):
         def rec_calc_size(t):
-	    if t.getChildCount():
-		if t.getName() in ['Add', 'Assign', 'Sub', 'Div', 'Mul', 'Mod', 'Function', 'If', 'Class', 'Raise']:
-	            r = 1
-		else:
-	            r = 0
-		for c in t.getChilds():
-	            r += rec_calc_size(c)
-	    else:
-	        if t.getName()[0] != "'" and t.getName() != 'Pass':
-		   return 0
-		else:
-		   return 1
+            if t.getChildCount():
+                if t.getName() in ['Add', 'Assign', 'Sub', 'Div', 'Mul', 'Mod', 'Function', 'If', 'Class', 'Raise']:
+                    r = 1
+                else:
+                    r = 0
+                for c in t.getChilds():
+                    r += rec_calc_size(c)
+            else:
+                if t.getName()[0] != "'" and t.getName() != 'Pass':
+                    return 0
+                else:
+                    return 1
             return r
         return rec_calc_size(self)
 
