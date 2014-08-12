@@ -22,7 +22,7 @@ entry_points = {
 }
 
 setup(
-    name='clonedigger',
+    name='clonedigger-jl',
     version=version,
     description=("Clone Digger aimed to detect similar code in Python "
                  "and Java programs."),
@@ -33,7 +33,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     keywords='buildout buildbot',
-    author='Peter Bulychev',
+    author='Jaroslaw Lachowski',
     author_email='jalachowski@gmail.com',
     url='https://github.com/jlachowski/clonedigger',
     license='GPL',
