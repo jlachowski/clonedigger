@@ -13,7 +13,7 @@ from setuptools import setup, find_packages
 def read(*rnames):
     return open(os.path.join(os.getcwd(), *rnames)).read()
 
-version = '1.0.4'
+version = '1.0.5'
 
 long_description = read('README.md')
 
