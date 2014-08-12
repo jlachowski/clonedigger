@@ -32,7 +32,8 @@ def findDuplicateCode(source_files, report):
 
     if not sequences_lengths:
         print 'Input is empty or the size of the input is below the size threshold'
-        sys.exit(0)
+        # sys.exit(0)
+        return []
 
     if verbose:
         n_sequences = len(sequences_lengths)    
@@ -348,13 +349,17 @@ def findDuplicateCode(source_files, report):
         if verbose:
             print len(clones) - old_clone_count, 'clones were removed' 
 
+    ## get covered source lines for all detected clones (set of all)
     covered_source_lines = set()
     for clone in clones:
         for sequence in clone:
-            covered_source_lines = covered_source_lines.union(sequence.getLineNumberHashables())
+            covered_source_lines |= sequence.getLineNumberHashables()
+
+    ## get source lines for all files/sequences (set of all)
     source_lines = set()
     for sequence in statement_sequences:
-        source_lines = source_lines.union(sequence.getLineNumberHashables())
+        source_lines |= sequence.getLineNumberHashables()
+
     report.all_source_lines_count = len(source_lines)
     report.covered_source_lines_count = len(covered_source_lines)
 
