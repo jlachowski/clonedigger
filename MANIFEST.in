@@ -1,5 +1,6 @@
 include HISTORY.txt
 include CONTRIBUTORS.txt
+include README.md
 include LICENSE
 recursive-include clonedigger *.py *.txt *.g *.jar *.java *.tokens *.sh
 
