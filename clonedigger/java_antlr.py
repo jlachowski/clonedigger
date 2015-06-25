@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 #    Copyright 2008 Peter Bulychev
 #    http://clonedigger.sourceforge.net
 #
@@ -19,7 +21,7 @@
 import os
 import xml.parsers.expat
 
-from abstract_syntax_tree import *
+from .abstract_syntax_tree import *
 
 
 class JavaANTLRSourceFile (SourceFile):
@@ -63,7 +65,7 @@ class JavaANTLRSourceFile (SourceFile):
         elif os.name in ['nt', 'dos', 'ce']:
             class_path_delimeter = ';'
         else:
-            print 'unsupported OS'
+            print('unsupported OS')
             assert(0)
         command = (
             'java -classpath ' + producer_class_path

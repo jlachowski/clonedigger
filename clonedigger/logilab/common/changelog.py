@@ -43,6 +43,7 @@ log title.
 :copyright: 2003-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 
 import sys
 from stat import S_IWRITE
@@ -97,7 +98,7 @@ class ChangeLogEntry(object):
         """complete the latest added message
         """
         if not self.messages:
-            print >> sys.stderr, 'Ignoring %r (unexpected format)' % msg_suite
+            print('Ignoring %r (unexpected format)' % msg_suite, file=sys.stderr)
         self.messages[-1].append(msg_suite)
 
     def write(self, stream=sys.stdout):

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #    Copyright 2008 Peter Bulychev
 #    http://clonedigger.sourceforge.net
 #
@@ -18,9 +19,9 @@
 
 import compiler
 import types
-import logilab.astng.nodes
+from . import logilab.astng.nodes
 
-from abstract_syntax_tree import *
+from .abstract_syntax_tree import *
 
 class PythonNodeLeaf:
     def __init__(self, val):

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import print_function
 import sys
 import os
 python_path = os.environ['PYTHONPATH']
@@ -10,9 +11,9 @@ except ImportError:
     if not os.path.exists(python_path): 
         os.mkdir(python_path)
     os.chdir(python_path)
-    print 'Missing Clone Digger'
-    print 'We will try now to install it to local directory', python_path
-    print 'please wait...'
+    print('Missing Clone Digger')
+    print('We will try now to install it to local directory', python_path)
+    print('please wait...')
     sys.argv = [sys.argv[0], 'easy_install', '--exclude-scripts', '-U', '--always-copy', '--install-dir', python_path, 'clonedigger']
     try:
 	   import setup

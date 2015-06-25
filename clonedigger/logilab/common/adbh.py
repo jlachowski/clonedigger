@@ -19,6 +19,7 @@ Helpers are provided for postgresql, mysql and sqlite.
 :copyright: 2003-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 __docformat__ = "restructuredtext en"
 
 from clonedigger.logilab.common.deprecation import obsolete
@@ -357,10 +358,10 @@ class _PGAdvFuncHelper(_GenericAdvFuncHelper):
         # make sure plpythonu is not directly in template1
         cursor.execute("SELECT * FROM pg_language WHERE lanname='%s';" % extlang)
         if cursor.fetchall():
-            print '%s language already installed' % extlang
+            print('%s language already installed' % extlang)
         else:
             cursor.execute('CREATE LANGUAGE %s' % extlang)
-            print '%s language installed' % extlang
+            print('%s language installed' % extlang)
 
     def list_users(self, cursor, username=None):
         """return the list of existing database users"""

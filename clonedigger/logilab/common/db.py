@@ -31,6 +31,7 @@ Additional helpers are also provided for advanced functionalities such
 as listing existing users or databases, creating database... Get the
 helper for your database using the `get_adv_func_helper` function.
 """
+from __future__ import print_function
 
 import sys
 import re
@@ -77,12 +78,12 @@ def _import_driver_module(driver, drivers, imported_elements=None, quiet=True):
     for modname in drivers[driver]:
         try:
             if not quiet:
-                print >> sys.stderr, 'Trying %s' % modname
+                print('Trying %s' % modname, file=sys.stderr)
             module = __import__(modname, globals(), locals(), imported_elements)
             break
         except ImportError:
             if not quiet:
-                print >> sys.stderr, '%s is not available' % modname
+                print('%s is not available' % modname, file=sys.stderr)
             continue
     else:
         raise ImportError('Unable to import a %s module' % driver)
@@ -509,10 +510,10 @@ class _MySqlDBAdapter(DBAPIAdapter):
         return DBAPIAdapter.process_value(self, value, description, encoding, binarywrap)
 
     def type_code_test(self, cursor):
-        print '*'*80
-        print 'module type codes'
+        print('*'*80)
+        print('module type codes')
         for typename in ('STRING', 'BOOLEAN', 'BINARY', 'DATETIME', 'NUMBER'):
-            print typename, getattr(self, typename)
+            print(typename, getattr(self, typename))
         try:
             cursor.execute("""CREATE TABLE _type_code_test(
             varchar_field varchar(50),
@@ -525,10 +526,10 @@ class _MySqlDBAdapter(DBAPIAdapter):
             cursor.execute("INSERT INTO _type_code_test VALUES ('1','2','3','4', '5', '6')")
             cursor.execute("SELECT * FROM _type_code_test")
             descr = cursor.description
-            print 'db fields type codes'
+            print('db fields type codes')
             for i, name in enumerate(('varchar', 'text', 'mediumtext',
                                       'binary', 'blob', 'longblob')):
-                print name, descr[i]
+                print(name, descr[i])
         finally:
             cursor.execute("DROP TABLE _type_code_test")
             
@@ -613,10 +614,10 @@ def get_dbapi_compliant_module(driver, prefered_drivers = None, quiet = False,
     """returns a fully dbapi compliant module"""
     try:
         mod = ADAPTER_DIRECTORY.adapt(driver, prefered_drivers, pywrap=pywrap)
-    except NoAdapterFound, err:
+    except NoAdapterFound as err:
         if not quiet:
             msg = 'No Adapter found for %s, returning native module'
-            print >> sys.stderr, msg % err.objname
+            print(msg % err.objname, file=sys.stderr)
         mod = err.adapted_obj
     from clonedigger.logilab.common.adbh import get_adv_func_helper
     mod.adv_func_helper = get_adv_func_helper(driver)
@@ -629,10 +630,10 @@ def get_connection(driver='postgres', host='', database='', user='',
     module, modname = _import_driver_module(driver, drivers, ['connect'])
     try:
         adapter = ADAPTER_DIRECTORY.get_adapter(driver, modname)
-    except NoAdapterFound, err:
+    except NoAdapterFound as err:
         if not quiet:
             msg = 'No Adapter found for %s, using default one' % err.objname
-            print >> sys.stderr, msg
+            print(msg, file=sys.stderr)
         adapted_module = DBAPIAdapter(module, pywrap)
     else:
         adapted_module = adapter(module, pywrap)

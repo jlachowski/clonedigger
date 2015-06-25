@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -17,7 +18,7 @@
 
 import types
 
-import arguments
+from . import arguments
 
 free_variable_cost = 0.5
 
@@ -159,7 +160,7 @@ class AbstractSyntaxTree:
  
     def __eq__(self, tree2):
         tree1 = self
-        if type(tree2) == types.NoneType:
+        if type(tree2) == type(None):
             return False
         if tree1.getName() != tree2.getName():
             return False
@@ -295,7 +296,7 @@ class PairSequences:
         assert(self[0].getWeight() == self[1].getWeight())
         return self[0].getWeight()
     def calcDistance(self):
-        import anti_unification
+        from . import anti_unification
         trees = [s.constructTree() for s in self]
         unifier = anti_unification.Unifier(trees[0], trees[1])
         return unifier.getSize()

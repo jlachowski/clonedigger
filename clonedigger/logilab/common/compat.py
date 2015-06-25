@@ -23,6 +23,7 @@ from __future__ import generators
 from warnings import warn
 
 from clonedigger.logilab.common.deprecation import class_renamed
+from functools import reduce
 
 try:
     set = set
@@ -132,7 +133,7 @@ except ImportError:
     def izip(*iterables):
         iterables = map(iter, iterables)
         while iterables:
-            result = [i.next() for i in iterables]
+            result = [next(i) for i in iterables]
             yield tuple(result)
 
     def chain(*iterables):
@@ -143,7 +144,7 @@ except ImportError:
     def imap(function, *iterables):
         iterables = map(iter, iterables)
         while True:
-            args = [i.next() for i in iterables]
+            args = [next(i) for i in iterables]
             if function is None:
                 yield tuple(args)
             else:

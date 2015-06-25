@@ -21,6 +21,7 @@ get_by_ext, remove_dead_links
 write_open_mode, ensure_fs_mode, export
 :sort: path manipulation, file manipulation
 """
+from __future__ import print_function
 
 __docformat__ = "restructuredtext en"
 
@@ -316,7 +317,7 @@ def stream_lines(stream, comments=None):
     :warning: at some point this function will probably return an iterator
     """
     try:
-        readlines = stream.xreadlines
+        readlines = stream.__iter__
     except AttributeError:
         readlines = stream.readlines
     result = []
@@ -371,7 +372,7 @@ def export(from_dir, to_dir,
                 src = join(directory, filename)
                 dest = to_dir + src[len(from_dir):]
                 if verbose:
-                    print >> sys.stderr, src, '->', dest
+                    print(src, '->', dest, file=sys.stderr)
                 if isdir(src):
                     if not exists(dest):
                         mkdir(dest)
@@ -403,7 +404,7 @@ def remove_dead_links(directory, verbose=0):
             src = join(directory, filename)
             if islink(src) and not exists(src):
                 if verbose:
-                    print 'remove dead link', src
+                    print('remove dead link', src)
                 remove(src)
     walk(directory, _remove_dead_link, None)
 

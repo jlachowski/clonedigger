@@ -39,7 +39,7 @@ class SuffixTree:
             e = string[pos]
             code = self._f_code(e)
             node.string_positions.append(self.StringPosition(string, pos, prevelem))
-            if not node.childs.has_key(code):
+            if code not in node.childs:
                 node.childs[code] = self.SuffixTreeNode()
             node = node.childs[code]
         node.ending_strings.append(self.StringPosition(string, pos+1, prevelem))

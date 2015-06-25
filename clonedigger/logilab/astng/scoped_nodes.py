@@ -153,7 +153,7 @@ class LocalsDictMixIn(object):
         """method from the `dict` interface returning True if the given
         name is defined in the locals dictionary
         """
-        return self.locals.has_key(name)
+        return name in self.locals
     
     __contains__ = has_key
     
@@ -287,7 +287,7 @@ class ModuleNG(object):
                         if not name.startswith('_')]
         # else lookup the astng
         try:
-            explicit = self['__all__'].assigned_stmts().next()
+            explicit = next(self['__all__'].assigned_stmts())
             # should be a tuple of constant string
             return [const.value for const in explicit.nodes]
         except (KeyError, AttributeError, InferenceError):
@@ -337,7 +337,7 @@ class FunctionNG(object):
         for child_node in self.code.getChildNodes():
             if isinstance(child_node, Raise) and child_node.expr1:
                 try:
-                    name = child_node.expr1.nodes_of_class(Name).next()
+                    name = next(child_node.expr1.nodes_of_class(Name))
                     if name.name == 'NotImplementedError':
                         return True
                 except StopIteration:
@@ -352,7 +352,7 @@ class FunctionNG(object):
     def is_generator(self):
         """return true if this is a generator function"""
         try:
-            return self.nodes_of_class(Yield, skip_klass=Function).next()
+            return next(self.nodes_of_class(Yield, skip_klass=Function))
         except StopIteration:
             return False
         
@@ -431,12 +431,12 @@ class FunctionNG(object):
 extend_class(Function, FunctionNG)
 
 # lambda nodes may also need some of the function members
-Lambda._pos_information = FunctionNG._pos_information.im_func
-Lambda.format_args = FunctionNG.format_args.im_func
-Lambda.default_value = FunctionNG.default_value.im_func
-Lambda.mularg_class = FunctionNG.mularg_class.im_func
+Lambda._pos_information = FunctionNG._pos_information.__func__
+Lambda.format_args = FunctionNG.format_args.__func__
+Lambda.default_value = FunctionNG.default_value.__func__
+Lambda.mularg_class = FunctionNG.mularg_class.__func__
 Lambda.type = 'function'
-Lambda.pytype = FunctionNG.pytype.im_func
+Lambda.pytype = FunctionNG.pytype.__func__
 
 # Class ######################################################################
 
@@ -546,7 +546,7 @@ class ClassNG(object):
         which have <name> defined in their locals
         """
         for astng in self.ancestors(context=context):
-            if astng.locals.has_key(name):
+            if name in astng.locals:
                 yield astng
 
     def instance_attr_ancestors(self, name, context=None):
@@ -554,7 +554,7 @@ class ClassNG(object):
         which have <name> defined in their instance attribute dictionary
         """
         for astng in self.ancestors(context=context):
-            if astng.instance_attrs.has_key(name):
+            if name in astng.instance_attrs:
                 yield astng
 
     def local_attr(self, name, context=None):
@@ -666,7 +666,7 @@ class ClassNG(object):
         done = {}
         for astng in chain(iter((self,)), self.ancestors()):
             for meth in astng.mymethods():
-                if done.has_key(meth.name):
+                if meth.name in done:
                     continue
                 done[meth.name] = None
                 yield meth

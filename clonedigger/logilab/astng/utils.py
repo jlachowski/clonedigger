@@ -98,7 +98,7 @@ class LocalsVisitor(ASTWalker):
         
     def visit(self, node):
         """launch the visit starting from the given node"""
-        if self._visited.has_key(node):
+        if node in self._visited:
             return
         self._visited[node] = 1
         methods = self.get_callbacks(node)
@@ -139,7 +139,7 @@ def are_exclusive(stmt1, stmt2):
     node = stmt2.parent
     previous = stmt2
     while node:
-        if stmt1_parents.has_key(node):
+        if node in stmt1_parents:
             # if the common parent is a If or TryExcept statement, look if
             # nodes are in exclusive branchs
             if isinstance(node, If):

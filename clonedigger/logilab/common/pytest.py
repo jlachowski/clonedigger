@@ -49,6 +49,7 @@ the ``optval`` method::
             # ...
             
 """
+from __future__ import print_function
 
 PYTEST_DOC = """%prog [OPTIONS] [testfile [testpattern]]
 
@@ -292,8 +293,8 @@ class PyTester(object):
     def show_report(self):
         """prints the report and returns appropriate exitcode"""
         # everything has been ran, print report
-        print "*" * 79
-        print self.report
+        print("*" * 79)
+        print(self.report)
         return self.report.failures + self.report.errors
         
 
@@ -307,7 +308,7 @@ class PyTester(object):
                     dirs.remove(skipped)
             basename = osp.basename(dirname)
             if basename in ('test', 'tests'):
-                print "going into", dirname
+                print("going into", dirname)
                 # we found a testdir, let's explore it !
                 self.testonedir(dirname, exitfirst)
                 dirs[:] = []
@@ -336,9 +337,9 @@ class PyTester(object):
             os.chdir(dirname)
         modname = osp.basename(filename)[:-3]
         try:
-            print >>sys.stderr, ('  %s  ' % osp.basename(filename)).center(70, '=')
+            print(('  %s  ' % osp.basename(filename)).center(70, '='), file=sys.stderr)
         except TypeError: # < py 2.4 bw compat
-            print >>sys.stderr, ('  %s  ' % osp.basename(filename)).center(70)
+            print(('  %s  ' % osp.basename(filename)).center(70), file=sys.stderr)
         try:
             try:
                 tstart, cstart = time(), clock()
@@ -350,9 +351,9 @@ class PyTester(object):
                 return testprog
             except (KeyboardInterrupt, SystemExit):
                 raise
-            except Exception, exc:
+            except Exception as exc:
                 self.report.failed_to_test_module(filename)
-                print 'unhandled exception occured while testing', modname
+                print('unhandled exception occured while testing', modname)
                 import traceback
                 traceback.print_exc()
                 return None                
@@ -399,7 +400,7 @@ class DjangoTester(PyTester):
         from django.test.utils import teardown_test_environment
         from django.test.utils import destroy_test_db
         teardown_test_environment()
-        print 'destroying', self.dbname
+        print('destroying', self.dbname)
         destroy_test_db(self.dbname, verbosity=0)
         
 
@@ -417,7 +418,7 @@ class DjangoTester(PyTester):
             else:
                 basename = osp.basename(dirname)
                 if basename in ('test', 'tests'):
-                    print "going into", dirname
+                    print("going into", dirname)
                     # we found a testdir, let's explore it !
                     self.testonedir(dirname, exitfirst)
                     dirs[:] = []
@@ -454,7 +455,7 @@ class DjangoTester(PyTester):
             os.chdir(dirname)
         self.load_django_settings(dirname)
         modname = osp.basename(filename)[:-3]
-        print >>sys.stderr, ('  %s  ' % osp.basename(filename)).center(70, '=')
+        print(('  %s  ' % osp.basename(filename)).center(70, '='), file=sys.stderr)
         try:
             try:
                 tstart, cstart = time(), clock()
@@ -466,12 +467,12 @@ class DjangoTester(PyTester):
                 return testprog
             except SystemExit:
                 raise
-            except Exception, exc:
+            except Exception as exc:
                 import traceback
                 traceback.print_exc()
                 self.report.failed_to_test_module(filename)
-                print 'unhandled exception occured while testing', modname
-                print 'error: %s' % exc
+                print('unhandled exception occured while testing', modname)
+                print('error: %s' % exc)
                 return None                
         finally:
             self.after_testfile()
@@ -614,7 +615,7 @@ def run():
                 prof = hotshot.Profile(options.profile)
                 prof.runcall(cmd, *args)
                 prof.close()
-                print 'profile data saved in', options.profile
+                print('profile data saved in', options.profile)
             else:
                  cmd(*args)           
         except SystemExit:
@@ -632,8 +633,8 @@ def run():
                 morfdir = osp.normpath(osp.join(here, '..'))
             else:
                 morfdir = here
-            print "computing code coverage (%s), this might take some time" % \
-                  morfdir
+            print("computing code coverage (%s), this might take some time" % \
+                  morfdir)
             cvg.annotate([morfdir])
             cvg.report([morfdir], False)
         sys.exit(errcode)

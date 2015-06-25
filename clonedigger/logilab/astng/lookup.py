@@ -27,6 +27,7 @@ ilookup return an iterator on infered values
 """
 
 from __future__ import generators
+from __future__ import print_function
 
 __docformat__ = "restructuredtext en"
 
@@ -137,7 +138,7 @@ def _filter_stmts(self, stmts, frame, offset):
         mylineno = mystmt.source_line() + offset
     else:
         # disabling lineno filtering
-        print 'disabling lineno filtering'
+        print('disabling lineno filtering')
         mylineno = 0
     _stmts = []
     _stmt_parents = []

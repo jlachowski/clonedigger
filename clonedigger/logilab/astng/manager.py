@@ -20,6 +20,7 @@ from various source and using a cache of built modules)
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import print_function
 
 __docformat__ = "restructuredtext en"
 
@@ -37,14 +38,14 @@ from clonedigger.logilab.astng import ASTNGBuildingException, Instance, nodes
 
 def astng_wrapper(func, modname):
     """wrapper to give to ASTNGManager.project_from_files"""
-    print 'parsing %s...' % modname
+    print('parsing %s...' % modname)
     try:
         return func(modname)
-    except ASTNGBuildingException, ex:
-        print ex
+    except ASTNGBuildingException as ex:
+        print(ex)
     except KeyboardInterrupt:
         raise
-    except Exception, ex:
+    except Exception as ex:
         import traceback
         traceback.print_exc()
 
@@ -109,7 +110,7 @@ class ASTNGManager(OptionsProviderMixIn):
                     astng = ASTNGBuilder(self).file_build(filepath, modname)
                 except SyntaxError:
                     raise
-                except Exception, ex:
+                except Exception as ex:
                     if __debug__:
                         import traceback
                         traceback.print_exc()
@@ -135,7 +136,7 @@ class ASTNGManager(OptionsProviderMixIn):
             if filepath is None or not is_python_source(filepath):
                 try:
                     module = load_module_from_name(modname) 
-                except ImportError, ex:
+                except ImportError as ex:
                     msg = 'Unable to load module %s (%s)' % (modname, ex)
                     raise ASTNGBuildingException(msg)
                 return self.astng_from_module(module, modname)
@@ -150,7 +151,7 @@ class ASTNGManager(OptionsProviderMixIn):
             try:
                 value = file_from_modpath(modname.split('.'),
                                           context_file=contextfile)
-            except ImportError, ex:
+            except ImportError as ex:
                 msg = 'Unable to load module %s (%s)' % (modname, ex)
                 value = ASTNGBuildingException(msg)
             self._mod_file_cache[(modname, contextfile)] = value
@@ -203,7 +204,7 @@ class ASTNGManager(OptionsProviderMixIn):
             except AttributeError:
                 raise ASTNGBuildingException(
                     'Unable to get module for %s' % safe_repr(klass))
-            except Exception, ex:
+            except Exception as ex:
                 raise ASTNGBuildingException(
                     'Unexpected error while retreiving module for %s: %s'
                     % (safe_repr(klass), ex))
@@ -212,7 +213,7 @@ class ASTNGManager(OptionsProviderMixIn):
         except AttributeError:
             raise ASTNGBuildingException(
                 'Unable to get name for %s' % safe_repr(klass))
-        except Exception, ex:
+        except Exception as ex:
             raise ASTNGBuildingException(
                 'Unexpected error while retreiving name for %s: %s'
                 % (safe_repr(klass), ex))
@@ -349,7 +350,7 @@ class Package:
     def __getitem__(self, name):
         return self.get_subobject(name)        
     def __contains__(self, name):
-        return self.has_key(name)
+        return name in self
     def __iter__(self):
         return iter(self.keys())
     

@@ -15,6 +15,7 @@
 
 a daemon mix-in class
 """
+from __future__ import print_function
 
 __revision__ = '$Id: daemon.py,v 1.10 2005-11-22 13:13:01 syt Exp $'
 
@@ -56,7 +57,7 @@ If it i not the case, remove the file %s''' % (self.name, self._pid_file))
             # move to the root to avoit mount pb
             os.chdir('/')
             # set paranoid umask
-            os.umask(077)
+            os.umask(0o77)
             # write pid in a file
             f = open(self._pid_file, 'w')
             f.write(str(os.getpid()))
@@ -84,7 +85,7 @@ If it i not the case, remove the file %s''' % (self.name, self._pid_file))
         while 1:
             try:
                 self._run()
-            except Exception, e:
+            except Exception as e:
                 # display for info, sleep, and hope the problem will be solved
                 # later.
                 self.config.log(LOG_ALERT, 'Internal error: %s'%(e))
@@ -123,14 +124,14 @@ L_OPTIONS = ["help", "log=", "delay=", 'no-detach']
 S_OPTIONS = 'hl:d:n'
 
 def print_help(modconfig):
-    print """  --help or -h
+    print("""  --help or -h
     displays this message
   --log <log_level>
     log treshold (7 record everything, 0 record only emergency.)
     Defaults to %s
   --delay <delay>
     the number of seconds between two runs.
-    Defaults to %s""" % (modconfig.LOG_TRESHOLD, modconfig.DELAY)
+    Defaults to %s""" % (modconfig.LOG_TRESHOLD, modconfig.DELAY))
 
 def handle_option(modconfig, opt_name, opt_value, help_meth):
     if opt_name in ('-h','--help'):            

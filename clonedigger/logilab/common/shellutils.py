@@ -73,7 +73,7 @@ def mv(source, destination, _action=shutil.move):
             destination = join(destination, basename(source))
         try:
             _action(source, destination)
-        except OSError, ex:
+        except OSError as ex:
             raise OSError('Unable to move %r to %r (%s)' % (
                 source, destination, ex))
         

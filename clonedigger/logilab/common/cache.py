@@ -100,5 +100,5 @@ class Cache:
         return self.data.values()
 
     def has_key(self, key):
-        return self.data.has_key(key)
+        return key in self.data
     

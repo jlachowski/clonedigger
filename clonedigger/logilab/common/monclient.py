@@ -1,6 +1,7 @@
 """Simple interpreter client for monserver
 provides a simple readline interface.
 """
+from __future__ import print_function
 
 from warnings import warn
 warn('this module is deprecated and will disappear in a near release',
@@ -45,7 +46,7 @@ def client( host, port ):
             line = raw_input() + "\n"
             sock.send( line )
         except EOFError:
-            print "Bye"
+            print("Bye")
             break
         except:
             sp_thread.stop = True

@@ -56,10 +56,10 @@ class Visitor(object):
 
     def _visit(self, node):
         iterator = self._get_iterator(node)
-        n = iterator.next()
+        n = next(iterator)
         while n:
             result = n.accept(self)
-            n = iterator.next()
+            n = next(iterator)
         return result
 
     def _get_iterator(self, node):

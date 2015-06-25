@@ -19,6 +19,7 @@ command'specific
 :copyright: 2003-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 
 # XXX : merge with optparser ? 
 import sys
@@ -97,15 +98,15 @@ def main_usage(status=0, __doc__=None, copyright=DEFAULT_COPYRIGHT):
 Type "%prog <command> --help" for more information about a specific
 command. Available commands are :\n''')
     doc = doc.replace('%prog', basename(sys.argv[0]))
-    print 'usage:', doc
+    print('usage:', doc)
     max_len = max([len(cmd) for cmd in commands]) # list comprehension for py 2.3 support
     padding = ' '*max_len
     for command in commands:
         cmd = _COMMANDS[command]
         if not cmd.hidden:
             title = cmd.__doc__.split('.')[0]
-            print ' ', (command+padding)[:max_len], title
-    print '\n', copyright
+            print(' ', (command+padding)[:max_len], title)
+    print('\n', copyright)
     sys.exit(status)
 
 
@@ -119,10 +120,10 @@ def cmd_run(cmdname, *args):
     try:
         command.run(args)
     except KeyboardInterrupt:
-        print 'interrupted'
-    except BadCommandUsage, err:
-        print 'ERROR: ', err
-        print command.help()
+        print('interrupted')
+    except BadCommandUsage as err:
+        print('ERROR: ', err)
+        print(command.help())
 
         
 def main_run(args, doc):
@@ -135,8 +136,8 @@ def main_run(args, doc):
         main_usage(__doc__=doc)
     try:
         cmd_run(arg, *args)
-    except BadCommandUsage, err:
-        print 'ERROR: ', err
+    except BadCommandUsage as err:
+        print('ERROR: ', err)
         main_usage(1, doc)
 
 
@@ -152,14 +153,14 @@ class ListCommandsCommand(Command):
             command = pop_arg(args)
             cmd = _COMMANDS[command]
             for optname, optdict in cmd.options:
-                print '--help'
-                print '--' + optname
+                print('--help')
+                print('--' + optname)
         else:
             commands = _COMMANDS.keys()
             commands.sort()
             for command in commands:
                 cmd = _COMMANDS[command]
                 if not cmd.hidden:
-                    print command
+                    print(command)
                 
 register_commands([ListCommandsCommand])

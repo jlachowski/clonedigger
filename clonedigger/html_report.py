@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -24,10 +26,10 @@ import traceback
 import os.path
 from cgi import escape
 
-import arguments
-import anti_unification
-import python_compiler
-from abstract_syntax_tree import AbstractSyntaxTree
+from . import arguments
+from . import anti_unification
+from . import python_compiler
+from .abstract_syntax_tree import AbstractSyntaxTree
 
 class Report:
     def __init__(self):
@@ -226,9 +228,9 @@ class HTMLReport(Report):
 
 
                         except:
-                            print 'The following error occured during highlighting of differences on the AST level:'
+                            print('The following error occured during highlighting of differences on the AST level:')
                             traceback.print_exc()                       
-                            print 'using diff highlight'
+                            print('using diff highlight')
                             (d,u) = use_diff()
                     for j in [0,1]:                 
                         t.append('<TD>\n' + d[j] + '</TD>\n')
@@ -241,7 +243,7 @@ class HTMLReport(Report):
                 s+= '</TABLE> </P> <HR>'
                 clone_descriptions.append(s)
             except:
-                print "Clone info can't be written to the report. "
+                print("Clone info can't be written to the report. ")
                 traceback.print_exc()                   
         
         descr = """<P>Source files: %d</P>

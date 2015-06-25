@@ -17,6 +17,7 @@
  This module provides a way to optimize globals in certain functions by binding
  their names to values provided in a dictionnary
 """
+from __future__ import print_function
 
 from warnings import warn
 warn('bind module is deprecated and will disappear in a near release',
@@ -61,7 +62,7 @@ def bind_code(co, globals):
             oparg = None
         if op == LOAD_GLOBAL:
             name = co.co_names[oparg]
-            if globals.has_key(name):
+            if name in globals:
                 k = assigned.get(name, None)
                 if k == None:
                     k = len(consts)
@@ -91,9 +92,9 @@ def bind_code(co, globals):
 def bind(f, globals):
     """Returns a new function whose code object has been
     bound by bind_code()"""
-    newcode = bind_code(f.func_code, globals)
-    defaults = f.func_defaults or ()
-    return make_function(newcode, f.func_globals, f.func_name, defaults)
+    newcode = bind_code(f.__code__, globals)
+    defaults = f.__defaults__ or ()
+    return make_function(newcode, f.__globals__, f.__name__, defaults)
 
 if type(__builtins__) == dict:
     builtins = __builtins__
@@ -148,11 +149,11 @@ def analyze_code(co, globals, consts_dict, consts_list):
         else:
             oparg = None
         if op == EXTENDED_ARG:
-            extended_arg = oparg*65536L
+            extended_arg = oparg*65536
 
         if op == LOAD_GLOBAL:
             name = co.co_names[oparg]
-            if globals.has_key(name):
+            if name in globals:
                 k = consts_dict.get(name, None)
                 if k == None:
                     k = len(consts_list)
@@ -160,7 +161,7 @@ def analyze_code(co, globals, consts_dict, consts_list):
                     consts_list.append(globals[name])
         if op == STORE_GLOBAL:
             name = co.co_names[oparg]
-            if globals.has_key(name):
+            if name in globals:
                 modified_globals.append(name)
     return modified_globals
 
@@ -186,7 +187,7 @@ def rewrite_code(co, consts_dict, consts_tuple):
         else:
             oparg = None
         if op == EXTENDED_ARG:
-            extended_arg = oparg*65536L
+            extended_arg = oparg*65536
         elif op == LOAD_GLOBAL:
             name = co.co_names[oparg]
             k = consts_dict.get(name)
@@ -234,12 +235,12 @@ def optimize_module_2(m, globals_consts, bind_builtins=1):
     for name, f in m.__dict__.items():
         if inspect.isfunction(f):
             functions[name] = f
-            analyze_code(f.func_code, globals, consts_dict, consts_list)
+            analyze_code(f.__code__, globals, consts_dict, consts_list)
     consts_list = tuple(consts_list)
     for name, f in functions.items():
-        newcode = rewrite_code(f.func_code, consts_dict, consts_list)
-        defaults = f.func_defaults or ()
-        m.__dict__[name] = make_function(newcode, f.func_globals, f.func_name,
+        newcode = rewrite_code(f.__code__, consts_dict, consts_list)
+        defaults = f.__defaults__ or ()
+        m.__dict__[name] = make_function(newcode, f.__globals__, f.__name__,
                                          defaults)
         
 
@@ -255,9 +256,9 @@ def run_bench(n):
     for i in range(n):
         test=bind2(bind_code, g)
     t2 = time()-t
-    print "1 regular version", t1
-    print "2 optimized version", t2
-    print "ratio (1-2)/1 : %f %%" % (100.*(t1-t2)/t1)
+    print("1 regular version", t1)
+    print("2 optimized version", t2)
+    print("ratio (1-2)/1 : %f %%" % (100.*(t1-t2)/t1))
     
 
 def test_pystone():

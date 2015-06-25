@@ -14,6 +14,7 @@
 # this program; if not, write to the Free Software Foundation, Inc.,
 # 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 """Text formatting drivers for ureports"""
+from __future__ import print_function
 
 __revision__ = "$Id: text_writer.py,v 1.9 2005-11-22 13:13:13 syt Exp $"
 
@@ -53,7 +54,7 @@ class TextWriter(BaseWriter):
         try:
             self.writeln(TITLE_UNDERLINES[self.section] * len(title))
         except IndexError:
-            print "FIXME TITLE TOO DEEP. TURNING TITLE INTO TEXT"
+            print("FIXME TITLE TOO DEEP. TURNING TITLE INTO TEXT")
         
     def visit_paragraph(self, layout):
         """enter a paragraph"""

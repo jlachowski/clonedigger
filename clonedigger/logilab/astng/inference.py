@@ -377,7 +377,7 @@ def infer_subscript(self, context=None):
     """infer simple subscription such as [1,2,3][0] or (1,2,3)[-1]
     """
     if len(self.subs) == 1:
-        index = self.subs[0].infer(context).next()
+        index = next(self.subs[0].infer(context))
         if index is YES:
             yield YES
             return

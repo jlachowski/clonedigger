@@ -3,6 +3,7 @@
 allows *one* client to connect and provides a command line interpreter
 allowing the remote client to explore the process on the fly
 """
+from __future__ import print_function
 
 from warnings import warn
 warn('this module is deprecated and will disappear in a near release',
@@ -79,7 +80,7 @@ class MonitorRequestHandler(SocketServer.BaseRequestHandler):
             sys.stdout = saved_stdout
             sys.stderr = saved_stderr
             traceback.print_exc()
-        print "Monitor handler exited"
+        print("Monitor handler exited")
 
 class Monitor(threading.Thread):
     """Monitor server. monothreaded we only
@@ -105,7 +106,7 @@ def demo_forever():
     numbers on screen"""
     cnt = 1
     while 1:
-        print cnt
+        print(cnt)
         time.sleep(2)
         cnt += 1
 

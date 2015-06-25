@@ -16,6 +16,7 @@
 :copyright: 2006-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 __docformat__ = "restructuredtext en"
 
 # XXX rewrite so we can use the decorator syntax when keyarg has to be specified
@@ -23,7 +24,7 @@ __docformat__ = "restructuredtext en"
 def cached(callableobj, keyarg=None):
     """simple decorator to cache result of method call"""
     #print callableobj, keyarg, callableobj.func_code.co_argcount
-    if callableobj.func_code.co_argcount == 1 or keyarg == 0:
+    if callableobj.__code__.co_argcount == 1 or keyarg == 0:
         
         def cache_wrapper1(self, *args):
             cache = '_%s_cache_' % callableobj.__name__
@@ -118,7 +119,7 @@ def timed(f):
         t = clock()
         #for i in range(100):
         res = f(*args, **kwargs)
-        print '%s time: %.9f' % (f.__name__, clock() - t)
+        print('%s time: %.9f' % (f.__name__, clock() - t))
         return res
     return wrap
 

@@ -1,5 +1,6 @@
 """Table management module
 """
+from __future__ import print_function
 
 __revision__ = '$Id: table.py,v 1.18 2006-04-09 22:30:53 nico Exp $'
 
@@ -683,7 +684,7 @@ class TableStyleSheet:
                 'table.py', 'exec'))
             self.rules.append(rule)
         except SyntaxError:
-            print "Bad Stylesheet Rule : %s [skipped]"%rule
+            print("Bad Stylesheet Rule : %s [skipped]"%rule)
 
     
     def add_rowsum_rule(self, dest_cell, row_index, start_col, end_col):

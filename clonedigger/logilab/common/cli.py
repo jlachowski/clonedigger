@@ -43,6 +43,7 @@ Exemple usage:
 :copyright: 2003-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 
 
 import __builtin__
@@ -66,7 +67,7 @@ def init_readline(complete_method, histfile=None):
             import atexit
             atexit.register(readline.write_history_file, histfile)
     except:
-        print 'readline si not available :-('
+        print('readline si not available :-(')
 
 
 class Completer :
@@ -110,13 +111,13 @@ class CLIHelper:
             try:
                 line = raw_input('>>> ')
             except EOFError:
-                print 
+                print() 
                 break
             s_line = line.strip()
             if not s_line:
                 continue
             args = s_line.split()
-            if self.commands.has_key(args[0]):
+            if args[0] in self.commands:
                 try:
                     cmd = 'do_%s' % self.commands[args[0]]
                     getattr(self, cmd)(*args[1:])
@@ -158,35 +159,35 @@ class CLIHelper:
         return self.commands.keys()
 
     def _print_help(self, cmd, syntax, explanation):
-        print _('Command %s') % cmd
-        print _('Syntax: %s') % syntax
-        print '\t', explanation
-        print
+        print(_('Command %s') % cmd)
+        print(_('Syntax: %s') % syntax)
+        print('\t', explanation)
+        print()
 
 
     # predefined commands #####################################################
     
     def do_help(self, command=None) :
         """base input of the help system"""
-        if self._command_help.has_key(command):
+        if command in self._command_help:
             self._print_help(*self._command_help[command])
-        elif command is None or not self._topics.has_key(command):
-            print _("Use help <topic> or help <command>.")
-            print _("Available topics are:")
+        elif command is None or command not in self._topics:
+            print(_("Use help <topic> or help <command>."))
+            print(_("Available topics are:"))
             topics = self._topics.keys()
             topics.sort()
             for topic in topics:
-                print '\t', topic
-            print
-            print _("Available commands are:")
+                print('\t', topic)
+            print()
+            print(_("Available commands are:"))
             commands = self.commands.keys()
             commands.sort()
             for command in commands:
-                print '\t', command[len(self.CMD_PREFIX):]
+                print('\t', command[len(self.CMD_PREFIX):])
                 
         else:
-            print _('Available commands about %s:') % command
-            print
+            print(_('Available commands about %s:') % command)
+            print()
             for command_help_method in self._topics[command]:
                 try:
                     if callable(command_help_method):
@@ -196,8 +197,8 @@ class CLIHelper:
                 except:
                     import traceback
                     traceback.print_exc()
-                    print 'ERROR in help method %s'% (
-                        command_help_method.func_name)
+                    print('ERROR in help method %s'% (
+                        command_help_method.__name__))
                 
     help_do_help = ("help", "help [topic|command]",
                     _("print help message for the given topic/command or \

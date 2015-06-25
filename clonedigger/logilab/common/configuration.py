@@ -68,6 +68,7 @@ config.generate_config()
 """
 
 from __future__ import generators 
+from __future__ import print_function
 
 __docformat__ = "restructuredtext en"
 __all__ = ('OptionsManagerMixIn', 'OptionsProviderMixIn',
@@ -164,7 +165,7 @@ VALIDATORS = {'string' : unquote,
               }
 
 def _call_validator(opttype, optdict, option, value):
-    if not VALIDATORS.has_key(opttype):
+    if opttype not in VALIDATORS:
         raise Exception('Unsupported type "%s"' % opttype)
     try:
         return VALIDATORS[opttype](optdict, option, value)
@@ -186,7 +187,7 @@ def input_password(optdict, question='password:'):
         value2 = getpass('confirm: ')
         if value == value2:
             return value
-        print 'password mismatch, try again'
+        print('password mismatch, try again')
 
 def input_string(optdict, question):
     value = raw_input(question).strip()
@@ -200,9 +201,9 @@ def _make_input_function(opttype):
                 return None
             try:
                 return _call_validator(opttype, optdict, None, value)
-            except OptionValueError, ex:
+            except OptionValueError as ex:
                 msg = str(ex).split(':', 1)[-1].strip()
-                print 'bad value: %s' % msg
+                print('bad value: %s' % msg)
     return input_validator
 
 INPUT_FUNCTIONS = {
@@ -270,37 +271,37 @@ def format_option_value(optdict, value):
 def ini_format_section(stream, section, options, doc=None):
     """format an options section using the INI format"""
     if doc:
-        print >> stream, comment(doc)
-    print >> stream, '[%s]' % section
+        print(comment(doc), file=stream)
+    print('[%s]' % section, file=stream)
     for optname, optdict, value in options:
         value = format_option_value(optdict, value)
         help = optdict.get('help')
         if help:
-            print >> stream
-            print >> stream, normalize_text(help, line_len=79, indent='# ')
+            print(file=stream)
+            print(normalize_text(help, line_len=79, indent='# '), file=stream)
         else:
-            print >> stream
+            print(file=stream)
         if value is None:
-            print >> stream, '#%s=' % optname
+            print('#%s=' % optname, file=stream)
         else:
-            print >> stream, '%s=%s' % (optname, str(value).strip())
+            print('%s=%s' % (optname, str(value).strip()), file=stream)
         
 format_section = ini_format_section
 
 def rest_format_section(stream, section, options, doc=None):
     """format an options section using the INI format"""
     if section:
-        print >> stream, '%s\n%s' % (section, "'"*len(section))
+        print('%s\n%s' % (section, "'"*len(section)), file=stream)
     if doc:
-        print >> stream, normalize_text(doc, line_len=79, indent='')
-        print >> stream
+        print(normalize_text(doc, line_len=79, indent=''), file=stream)
+        print(file=stream)
     for optname, optdict, value in options:
         help = optdict.get('help')
-        print >> stream, ':%s:' % optname
+        print(':%s:' % optname, file=stream)
         if help:
-            print >> stream, normalize_text(help, line_len=79, indent='  ')
+            print(normalize_text(help, line_len=79, indent='  '), file=stream)
         if value:
-            print >> stream, '  Default: %s' % format_option_value(optdict, value)
+            print('  Default: %s' % format_option_value(optdict, value), file=stream)
 
 
 class OptionsManagerMixIn(object):
@@ -337,7 +338,7 @@ class OptionsManagerMixIn(object):
         else:
             self.options_providers.append(provider)
         non_group_spec_options = [option for option in provider.options
-                                  if not option[1].has_key('group')]
+                                  if 'group' not in option[1]]
         groups = getattr(provider, 'option_groups', ())
         if own_group:
             self.add_option_group(provider.name.upper(), provider.__doc__,
@@ -373,19 +374,19 @@ class OptionsManagerMixIn(object):
         use with optik/optparse
         """
         opt_dict = copy(opt_dict)
-        if opt_dict.has_key('action'):
+        if 'action' in opt_dict:
             self._nocallback_options[provider] = opt_name
         else:
             opt_dict['action'] = 'callback'
             opt_dict['callback'] = self.cb_set_provider_option
         for specific in ('default', 'group', 'inputlevel'):
-            if opt_dict.has_key(specific):
+            if specific in opt_dict:
                 del opt_dict[specific]
                 if (OPTPARSE_FORMAT_DEFAULT
-                    and specific == 'default' and opt_dict.has_key('help')):
+                    and specific == 'default' and 'help' in opt_dict):
                     opt_dict['help'] += ' [current: %default]'
         args = ['--' + opt_name]
-        if opt_dict.has_key('short'):
+        if 'short' in opt_dict:
             self._short_options[opt_dict['short']] = opt_name
             args.append('-' + opt_dict['short'])
             del opt_dict['short']
@@ -434,7 +435,7 @@ class OptionsManagerMixIn(object):
                 else:
                     doc = None
                 if printed:
-                    print >> stream, '\n'
+                    print('\n', file=stream)
                 format_section(stream, section.upper(), options, doc)
                 printed = True
 
@@ -467,7 +468,7 @@ class OptionsManagerMixIn(object):
             self._config_parser.read([config_file])
         elif not self.quiet:
             msg = 'No config file found, using default configuration'
-            print >> sys.stderr, msg
+            print(msg, file=sys.stderr)
             return
     
     def input_config(self, onlysection=None, inputlevel=0, stream=None):
@@ -495,7 +496,7 @@ class OptionsManagerMixIn(object):
                 try:
                     value = parser.get(section, option)
                     provider.set_option(option, value, opt_dict=optdict)
-                except (NoSectionError, NoOptionError), ex:
+                except (NoSectionError, NoOptionError) as ex:
                     continue
 
     def load_configuration(self, **kwargs):
@@ -670,12 +671,12 @@ class OptionsProviderMixIn(object):
             defaultstr = ': '
         else:
             defaultstr = '(default: %s): ' % format_option_value(optdict, default)
-        print ':%s:' % option
-        print optdict.get('help') or option
+        print(':%s:' % option)
+        print(optdict.get('help') or option)
         inputfunc = INPUT_FUNCTIONS[optdict['type']]
         value = inputfunc(optdict, defaultstr)
         while default is REQUIRED and not value:
-            print 'please specify a value'
+            print('please specify a value')
             value = inputfunc(optdict, '%s: ' % option)
         if value is None and default is not None:
             value = default

@@ -53,7 +53,7 @@ def intersection(list1, list2):
     for item in list1:
         intersect_dict[item] = 1
     for item in list2:
-        if intersect_dict.has_key(item):
+        if item in intersect_dict:
             result.append(item)
     return result
 
@@ -65,7 +65,7 @@ def difference(list1, list2):
     for i in list2:
         tmp[i] = 1
     for i in list1:
-        if not tmp.has_key(i):
+        if i not in tmp:
             result.append(i)
     return result
 

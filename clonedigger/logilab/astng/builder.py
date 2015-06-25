@@ -204,7 +204,7 @@ class ASTNGBuilder:
         """
         try:
             data = norm_read(path)
-        except IOError, ex:
+        except IOError as ex:
             msg = 'Unable to load file %r (%s)' % (path, ex)
             raise ASTNGBuildingException(msg)
         self._file = path
@@ -521,7 +521,7 @@ class ASTNGBuilder:
         """recursive method which create a partial ast from real objects
          (only function, class, and method are handled)
         """
-        if self._done.has_key(obj):
+        if obj in self._done:
             return self._done[obj]
         self._done[obj] = node
         modname = self._module.__name__
@@ -534,10 +534,10 @@ class ASTNGBuilder:
                 attach_dummy_node(node, name)
                 continue
             if ismethod(member):
-                member = member.im_func
+                member = member.__func__
             if isfunction(member):
                 # verify this is not an imported function
-                if member.func_code.co_filename != modfile:
+                if member.__code__.co_filename != modfile:
                     attach_dummy_node(node, name, member)
                     continue
                 object_build_function(node, member)

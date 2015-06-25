@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -18,9 +19,9 @@
 import copy
 import sys
 
-from abstract_syntax_tree import *
-import suffix_tree
-import arguments
+from .abstract_syntax_tree import *
+from . import suffix_tree
+from . import arguments
 
 # NOTE that everywhere is written Unifier instead of AntiUnifier, for simplicity
 

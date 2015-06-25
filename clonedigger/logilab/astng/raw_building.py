@@ -183,7 +183,7 @@ def object_build_function(node, member):
     if varkw is not None:
         args.append(varkw)
     func = build_function(member.__name__, args, defaults,
-                          member.func_code.co_flags, member.__doc__)
+                          member.__code__.co_flags, member.__doc__)
     node.add_local_node(func)
 
 def object_build_datadescriptor(node, member, name):

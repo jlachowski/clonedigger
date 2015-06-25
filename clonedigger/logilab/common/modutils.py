@@ -74,7 +74,7 @@ class LazyObject(object):
     def __getattribute__(self, attr):
         try:
             return super(LazyObject, self).__getattribute__(attr)
-        except AttributeError, ex:
+        except AttributeError as ex:
             return getattr(self.__getobj(), attr)
         
     def __call__(self, *args, **kwargs):

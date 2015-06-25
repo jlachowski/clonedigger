@@ -16,6 +16,7 @@
 :copyright: 2003-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 __docformat__ = "restructuredtext en"
 
 
@@ -238,4 +239,4 @@ def sql_repr(type, val):
 if __name__ == "__main__":
     import doctest
     from clonedigger.logilab.common import sqlgen
-    print doctest.testmod(sqlgen)
+    print(doctest.testmod(sqlgen))

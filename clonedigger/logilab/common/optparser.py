@@ -27,6 +27,7 @@ Example:
 
 With mymod.build that defines two functions run and add_options
 """
+from __future__ import print_function
 
 # XXX merge with optik_ext ? merge with clcommands ? 
 
@@ -50,9 +51,9 @@ class OptionParser(optparse.OptionParser):
 
     def print_main_help(self):
         optparse.OptionParser.print_help(self)
-        print '\ncommands:'
+        print('\ncommands:')
         for cmdname, (_, help) in self._commands.items():
-            print '% 10s - %s' % (cmdname, help)
+            print('% 10s - %s' % (cmdname, help))
         
     def parse_command(self, args):
         if len(args) == 0:

@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import absolute_import
 #    Copyright 2008 Peter Bulychev
 #    http://clonedigger.sourceforge.net
 #
@@ -19,7 +21,7 @@
 import os
 import xml.parsers.expat
 
-from abstract_syntax_tree import *
+from .abstract_syntax_tree import *
 
 class LuaANTLRSourceFile (SourceFile):
     extension = 'lua'
@@ -55,7 +57,7 @@ class LuaANTLRSourceFile (SourceFile):
         elif os.name in ['nt', 'dos', 'ce']:
             class_path_delimeter = ';'
         else:
-            print 'unsupported OS'
+            print('unsupported OS')
             assert(0)
 
         if os.system('java -classpath ' + producer_class_path + class_path_delimeter + antlr_class_path + ' TreeProducer %s %s 2>err.log'%(file_name, tree_file_name)):
@@ -67,7 +69,7 @@ class LuaANTLRSourceFile (SourceFile):
         s = f.read()
         f.close()
         if s:
-            print s
+            print(s)
         
         self._tree = AbstractSyntaxTree('program')
         handler = ExpatHandler(self._tree, self)

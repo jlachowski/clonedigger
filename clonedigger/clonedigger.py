@@ -16,6 +16,8 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with Clone Digger.  If not, see <http://www.gnu.org/licenses/>.
+from __future__ import print_function
+from __future__ import absolute_import
 import sys
 
 if __name__ == '__main__':
@@ -27,10 +29,10 @@ import traceback
 from optparse import OptionParser
 from fnmatch import fnmatch
 
-import ast_suppliers
-import clone_detection_algorithm
-import arguments 
-import html_report
+from . import ast_suppliers
+from . import clone_detection_algorithm
+from . import arguments 
+from . import html_report
 
 def main():
     cmdline = OptionParser(usage="""To run Clone Digger type:
@@ -144,7 +146,7 @@ The semantics of threshold options is discussed in the paper "Duplicate code det
 
     def parse_file(file_name, func_prefixes):
         try:
-            print 'Parsing ', file_name, '...',
+            print('Parsing ', file_name, '...', end=' ')
             sys.stdout.flush()
             if options.language=='python':
                 source_file = supplier(file_name, func_prefixes)
@@ -155,11 +157,11 @@ The semantics of threshold options is discussed in the paper "Duplicate code det
             source_file.getTree().propagateHeight()
             source_files.append(source_file)
             report.addFileName(file_name)                
-            print 'done'
+            print('done')
         except:
             s = 'Error: can\'t parse "%s" \n: '%(file_name,) + traceback.format_exc()
             report.addErrorInformation(s)
-            print s
+            print(s)
 
     def walk(dirname):
         for dirpath, dirs, files in os.walk(file_name):
@@ -192,7 +194,7 @@ The semantics of threshold options is discussed in the paper "Duplicate code det
     try:
         report.writeReport(output_file_name)
     except:
-        print "catched error, removing output file"
+        print("catched error, removing output file")
         if os.path.exists(output_file_name):
             os.remove(output_file_name)
         raise 

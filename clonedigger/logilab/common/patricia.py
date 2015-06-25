@@ -84,7 +84,7 @@ class PatriciaNode:
                 n.edges[e] = self
                 return n
             n_pfx, n_e, n_sfx = split(len(self.value), string)
-            if self.edges.has_key(n_e):
+            if n_e in self.edges:
                 self.edges[n_e] = self.edges[n_e].insert(n_sfx, data)
             else:
                 self.edges[n_e] = PatriciaNode(n_sfx, 1, data)
@@ -124,7 +124,7 @@ class PatriciaNode:
         sfxs = []
         if pfx and self.value[:len(pfx)] != pfx:
             pfx, e, sfx = split(len(self.value), pfx)
-            if self.value == pfx and self.edges.has_key(e):
+            if self.value == pfx and e in self.edges:
                 sfxs = ['%s%s%s' % (self.value, e, sfx)
                         for sfx in self.edges[e].pfx_search(sfx, depth)]
         else:

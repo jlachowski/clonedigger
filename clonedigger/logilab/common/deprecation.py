@@ -16,6 +16,7 @@
 :copyright: 2006-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import print_function
 __docformat__ = "restructuredtext en"
 
 import sys
@@ -86,7 +87,7 @@ def deprecated_function(new_func, message=None):
     """
     if message is None:
         message = "this function is deprecated, use %s instead" % (
-            new_func.func_name)
+            new_func.__name__)
     def deprecated(*args, **kwargs):
         warn(message, DeprecationWarning, stacklevel=2)
         return new_func(*args, **kwargs)
@@ -119,7 +120,7 @@ class WarnLazyObject(LazyObject):
         super(WarnLazyObject, self).__init__(package, module)
         self.oldname = oldname
         self.newname = newname
-        print 'hop', oldname, newname
+        print('hop', oldname, newname)
         sys.modules[oldname] = self
 
     def __getobj(self):

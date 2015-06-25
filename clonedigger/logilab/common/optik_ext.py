@@ -27,6 +27,7 @@ It also defines three new types for optik/optparse command line parser :
     argument of this type are in the form <NAME>=<VALUE> or <NAME>:<VALUE>
 
 """
+from __future__ import print_function
 
 import re
 import sys
@@ -181,7 +182,7 @@ class Option(BaseOption):
             if self.choices is None:
                 raise OptionError(
                     "must supply a list of choices for type 'choice'", self)
-            elif type(self.choices) not in (types.TupleType, types.ListType):
+            elif type(self.choices) not in (tuple, list):
                 raise OptionError(
                     "choices must be a list of strings ('%s' supplied)"
                     % str(type(self.choices)).split("'")[1], self)
@@ -322,9 +323,9 @@ Please report bugs on the project\'s mailing list:
 def generate_manpage(optparser, pkginfo, section=1, stream=sys.stdout):
     """generate a man page from an optik parser"""
     formatter = ManHelpFormatter()
-    print >> stream, formatter.format_head(optparser, pkginfo, section)
-    print >> stream, optparser.format_option_help(formatter)
-    print >> stream, formatter.format_tail(pkginfo)
+    print(formatter.format_head(optparser, pkginfo, section), file=stream)
+    print(optparser.format_option_help(formatter), file=stream)
+    print(formatter.format_tail(pkginfo), file=stream)
 
     
 __all__ = ('OptionParser', 'Option', 'OptionGroup', 'OptionValueError',
