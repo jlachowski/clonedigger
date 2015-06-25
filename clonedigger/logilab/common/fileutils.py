@@ -22,6 +22,12 @@ write_open_mode, ensure_fs_mode, export
 :sort: path manipulation, file manipulation
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 __docformat__ = "restructuredtext en"
 
@@ -32,7 +38,7 @@ from os.path import isabs, isdir, islink, split, exists, walk, normpath, join
 from os.path import abspath
 from os import sep, mkdir, remove, listdir, stat, chmod
 from stat import ST_MODE, S_IWRITE
-from cStringIO import StringIO
+from io import StringIO
 
 from clonedigger.logilab.common import STD_BLACKLIST as BASE_BLACKLIST, IGNORED_EXTENSIONS
 from clonedigger.logilab.common.shellutils import find

@@ -20,6 +20,14 @@ Helpers are provided for postgresql, mysql and sqlite.
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
+from future.utils import with_metaclass
 __docformat__ = "restructuredtext en"
 
 from clonedigger.logilab.common.deprecation import obsolete
@@ -34,9 +42,7 @@ class metafunc(type):
         return type.__new__(mcs, name, bases, dict)
 
     
-class FunctionDescr(object):
-    __metaclass__ = metafunc
-
+class FunctionDescr(with_metaclass(metafunc, object)):
     rtype = None # None <-> returned type should be the same as the first argument
     aggregat = False
     minargs = 1
@@ -81,7 +87,7 @@ class IN(FunctionDescr):
 class LENGTH(FunctionDescr):
     rtype = 'Int'
 
-class _GenericAdvFuncHelper:
+class _GenericAdvFuncHelper(object):
     """Generic helper, trying to provide generic way to implement
     specific functionnalities from others DBMS
 
@@ -133,7 +139,7 @@ class _GenericAdvFuncHelper:
 
     #@classmethod
     def register_function(cls, funcdef):
-        if isinstance(funcdef, basestring) :
+        if isinstance(funcdef, str) :
             funcdef = FunctionDescr(funcdef.upper())
         assert not funcdef.name in cls.FUNCTIONS, \
                '%s is already registered' % funcdef.name

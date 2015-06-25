@@ -23,6 +23,14 @@ Note that vcg exists as a debian package.
 See the documentation of vcg for explanation about the different value that
 maybe used for the functions parameters
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 __revision__ = "$Id: vcgutils.py,v 1.6 2003-12-10 08:15:09 syt Exp $"
 
@@ -138,7 +146,7 @@ def latin_to_vcg(st):
     return st
 
 
-class VCGPrinter:
+class VCGPrinter(object):
     """a vcg graph writer
     """
     
@@ -183,12 +191,12 @@ class VCGPrinter:
     def _write_attributes(self, attributes_dict, **args):
         """write graph, node or edge attributes
         """
-        for key, value in args.items():
+        for key, value in list(args.items()):
             try:
                 _type =  attributes_dict[key]
             except KeyError:
                 raise Exception('''no such attribute %s
-possible attributes are %s''' % (key, attributes_dict.keys()))
+possible attributes are %s''' % (key, list(attributes_dict.keys())))
 
             if not _type:
                 self._stream.write('%s%s:"%s"\n' % (self._indent, key, value))

@@ -23,6 +23,14 @@ This module has been imported from pyreverse
 :copyright: 2003-2005 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 
@@ -34,7 +42,7 @@ from clonedigger.logilab.common.modutils import get_module_part, is_relative, \
 from clonedigger.logilab import astng
 from clonedigger.logilab.astng.utils import LocalsVisitor
 
-class IdGeneratorMixIn:
+class IdGeneratorMixIn(object):
     """
     Mixin adding the ability to generate integer uid
     """
@@ -104,7 +112,7 @@ class Linker(IdGeneratorMixIn, LocalsVisitor):
         """
         if self.tag:
             node.uid = self.generate_id()
-        for subelmt in node.values():
+        for subelmt in list(node.values()):
             self.visit(subelmt)
             
     def visit_module(self, node):
@@ -140,7 +148,7 @@ class Linker(IdGeneratorMixIn, LocalsVisitor):
             baseobj.specializations = specializations
         # resolve instance attributes
         node.instance_attrs_type = {}
-        for assattrs in node.instance_attrs.values():
+        for assattrs in list(node.instance_attrs.values()):
             for assattr in assattrs:
                 self.visit_assattr(assattr, node)
         # resolve implemented interface

@@ -23,10 +23,18 @@
 
   This module requires at least python 2.2
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 from types import ListType, TupleType
 
-class Interface:
+class Interface(object):
     """base class for interfaces"""
     def is_implemented_by(cls, instance):
         return implements(instance, cls)

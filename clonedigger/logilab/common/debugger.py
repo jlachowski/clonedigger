@@ -6,6 +6,12 @@
   of using 5 lines of context
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 try:
     import readline
@@ -15,7 +21,7 @@ import os
 import os.path as osp
 import sys
 from pdb import Pdb
-from cStringIO import StringIO
+from io import StringIO
 import inspect
 
 try:

@@ -27,6 +27,16 @@ a set of common functionnalities shared among logilab projects
 :var IGNORED_EXTENSIONS:
   file extensions that may usually be ignored
 """
+from __future__ import division
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from past.utils import old_div
+from builtins import object
 
 STD_BLACKLIST = ('CVS', '.svn', '.hg', 'debian', 'dist', 'build')
 
@@ -78,7 +88,7 @@ def union(list1, list2):
         tmp[i] = 1
     for i in list2:
         tmp[i] = 1
-    return tmp.keys()
+    return list(tmp.keys())
 
 
 class attrdict(dict):
@@ -90,7 +100,7 @@ class attrdict(dict):
             raise AttributeError(attr)
         
 class nullobject(object):
-    def __nonzero__(self):
+    def __bool__(self):
         return False
 
 # flatten -----
@@ -153,7 +163,7 @@ def make_domains(lists):
         for i in range(len(domains)):
             domains[i] = domains[i]*len(iterable)
         if domains:
-            missing = (len(domains[0]) - len(iterable)) / len(iterable)
+            missing = old_div((len(domains[0]) - len(iterable)), len(iterable))
             i = 0
             for j in range(len(iterable)):
                 value = iterable[j]

@@ -44,11 +44,19 @@ Exemple usage:
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import *
+from builtins import object
 
 
-import __builtin__
+import builtins
 if not hasattr(__builtin__, '_'):
-    __builtin__._ = str
+    builtins._ = str
     
 
 def init_readline(complete_method, histfile=None):
@@ -70,7 +78,7 @@ def init_readline(complete_method, histfile=None):
         print('readline si not available :-(')
 
 
-class Completer :
+class Completer(object) :
     """readline completer"""
     
     def __init__(self, commands):
@@ -89,7 +97,7 @@ class Completer :
             return None
 
 
-class CLIHelper:
+class CLIHelper(object):
     """ an abstract command line interface client which recognize commands
     and provide an help system
     """
@@ -109,7 +117,7 @@ class CLIHelper:
         """loop on user input, exit on EOF"""
         while 1:
             try:
-                line = raw_input('>>> ')
+                line = input('>>> ')
             except EOFError:
                 print() 
                 break
@@ -156,7 +164,7 @@ class CLIHelper:
             self._topics.setdefault(topic, []).append(help_method)
             self.commands[self.CMD_PREFIX + command] = command
             self._command_help[command] = help_method
-        return self.commands.keys()
+        return list(self.commands.keys())
 
     def _print_help(self, cmd, syntax, explanation):
         print(_('Command %s') % cmd)
@@ -174,13 +182,13 @@ class CLIHelper:
         elif command is None or command not in self._topics:
             print(_("Use help <topic> or help <command>."))
             print(_("Available topics are:"))
-            topics = self._topics.keys()
+            topics = list(self._topics.keys())
             topics.sort()
             for topic in topics:
                 print('\t', topic)
             print()
             print(_("Available commands are:"))
-            commands = self.commands.keys()
+            commands = list(self.commands.keys())
             commands.sort()
             for command in commands:
                 print('\t', command[len(self.CMD_PREFIX):])

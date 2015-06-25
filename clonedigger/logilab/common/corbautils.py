@@ -1,4 +1,11 @@
 """A set of utility function to ease the use of OmniORBpy."""
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 __revision__ = '$Id: corbautils.py,v 1.2 2005-11-22 13:13:00 syt Exp $'
 

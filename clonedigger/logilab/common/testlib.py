@@ -23,6 +23,17 @@ If no non-option arguments are present, prefixes used are 'test',
 
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
+from builtins import str
+from builtins import input
+from builtins import map
+from builtins import *
+from builtins import object
 import sys
 import os, os.path as osp
 import re
@@ -45,7 +56,7 @@ try:
     from test import test_support
 except ImportError:
     # not always available
-    class TestSupport:
+    class TestSupport(object):
         def unload(self, test):
             pass
     test_support = TestSupport()
@@ -291,7 +302,7 @@ def start_interactive_mode(result):
             print("Type 'exit' (or ^D) to quit")
             print()
             try:
-                todebug = raw_input('Enter a test name: ')
+                todebug = input('Enter a test name: ')
                 if todebug.strip().lower() == 'exit':
                     print()
                     break
@@ -309,7 +320,7 @@ def start_interactive_mode(result):
 
 
 # test utils ##################################################################
-from cStringIO import StringIO
+from io import StringIO
 
 class SkipAwareTestResult(unittest._TextTestResult):
 
@@ -483,7 +494,7 @@ class SkipAwareTextTestRunner(unittest.TextTestRunner):
         self.stream.writeln()
         if not result.wasSuccessful():
             self.stream.write("FAILED (")
-            failed, errored = map(len, (result.failures, result.errors))
+            failed, errored = list(map(len, (result.failures, result.errors)))
             if failed:
                 self.stream.write("failures=%d" % failed)
             if errored:
@@ -538,7 +549,7 @@ class NonStrictTestLoader(unittest.TestLoader):
 
     def _collect_tests(self, module):
         tests = {}
-        for obj in vars(module).values():
+        for obj in list(vars(module).values()):
             if (issubclass(type(obj), (type, type)) and
                  issubclass(obj, unittest.TestCase)):
                 classname = obj.__name__
@@ -587,7 +598,7 @@ class NonStrictTestLoader(unittest.TestLoader):
                     collected = [klass(methodname) for methodname in methodnames]
             else:
                 # case python unittest_foo.py something
-                for klass, methodnames in tests.values():
+                for klass, methodnames in list(tests.values()):
                     collected += [klass(methodname) for methodname in methodnames]
         elif len(parts) == 2:
             # case "MyClass.test_1"
@@ -726,7 +737,7 @@ Examples:
 
 
 
-class FDCapture: 
+class FDCapture(object): 
     """adapted from py lib (http://codespeak.net/py)
     Capture IO to/from a given os-level filedescriptor.
     """
@@ -1088,7 +1099,7 @@ class TestCase(unittest.TestCase):
         """
         d1 = d1.copy()
         msgs = []
-        for key, value in d2.items():
+        for key, value in list(d2.items()):
             try:
                 if d1[key] != value:
                     msgs.append('%r != %r for key %r' % (d1[key], value, key))
@@ -1311,7 +1322,7 @@ class DocTest(TestCase):
 
 MAILBOX = None
 
-class MockSMTP:
+class MockSMTP(object):
     """fake smtplib.SMTP"""
     
     def __init__(self, host, port):
@@ -1331,7 +1342,7 @@ class MockSMTP:
         """ignore quit"""
 
 
-class MockConfigParser:
+class MockConfigParser(object):
     """fake ConfigParser.ConfigParser"""
     
     def __init__(self, options):
@@ -1349,7 +1360,7 @@ class MockConfigParser:
             return 0
     
 
-class MockConnection:
+class MockConnection(object):
     """fake DB-API 2.0 connexion AND cursor (i.e. cursor() return self)"""
     
     def __init__(self, results):
@@ -1442,6 +1453,6 @@ def enable_dbc(*args):
     return True
 
     
-class AttrObject: # XXX cf mock_object
+class AttrObject(object): # XXX cf mock_object
     def __init__(self, **kwargs):
         self.__dict__.update(kwargs)

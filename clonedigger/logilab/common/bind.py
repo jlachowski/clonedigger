@@ -18,6 +18,14 @@
  their names to values provided in a dictionnary
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import chr
+from builtins import range
+from builtins import *
 
 from warnings import warn
 warn('bind module is deprecated and will disappear in a near release',
@@ -113,7 +121,7 @@ def optimize_module(m, global_consts):
         v = m.__dict__.get(i)
         d[i] = v
     builtins = m.__builtins__
-    for name, f in m.__dict__.items():
+    for name, f in list(m.__dict__.items()):
         if inspect.isfunction(f):
             f = bind(f, builtins)
             if d:
@@ -228,16 +236,16 @@ def optimize_module_2(m, globals_consts, bind_builtins=1):
     else:
         globals = globals_consts
     if bind_builtins:
-        for builtin_name, builtin_value in m.__builtins__.items():
+        for builtin_name, builtin_value in list(m.__builtins__.items()):
             # this way it is possible to redefine a builtin in globals_consts
             globals.setdefault(builtin_name, builtin_value)
     functions = {}
-    for name, f in m.__dict__.items():
+    for name, f in list(m.__dict__.items()):
         if inspect.isfunction(f):
             functions[name] = f
             analyze_code(f.__code__, globals, consts_dict, consts_list)
     consts_list = tuple(consts_list)
-    for name, f in functions.items():
+    for name, f in list(functions.items()):
         newcode = rewrite_code(f.__code__, consts_dict, consts_list)
         defaults = f.__defaults__ or ()
         m.__dict__[name] = make_function(newcode, f.__globals__, f.__name__,
@@ -268,7 +276,7 @@ def test_pystone():
     optimize_module(pystone, ('TRUE','FALSE','Proc0','Proc1','Proc2','Proc3',
                               'Proc4','Proc5','Proc6','Proc7','Proc8','Func1',
                              ' Func2','Func3'))
-    optimize_module(pystone, builtins.keys())
+    optimize_module(pystone, list(builtins.keys()))
     for _ in range(5):
         pystone.main()
 

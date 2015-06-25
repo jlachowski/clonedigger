@@ -16,6 +16,15 @@
 """
  base class to represent tree structure
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 import sys
 
@@ -253,7 +262,7 @@ class BinaryNode(VNode):
 if sys.version_info[0:2] >= (2, 2):
     list_class = list
 else:
-    from UserList import UserList
+    from collections import UserList
     list_class = UserList
     
 class ListNode(VNode, list_class):

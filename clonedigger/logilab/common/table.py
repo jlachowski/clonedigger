@@ -1,6 +1,16 @@
 """Table management module
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
+from builtins import str
+from builtins import range
+from builtins import *
+from builtins import object
 
 __revision__ = '$Id: table.py,v 1.18 2006-04-09 22:30:53 nico Exp $'
 
@@ -515,7 +525,7 @@ class Table(object):
     
 
     
-class TableStyle:
+class TableStyle(object):
     """Defines a table's style
     """
 
@@ -654,7 +664,7 @@ class TableStyle:
 import re    
 CELL_PROG = re.compile("([0-9]+)_([0-9]+)")
 
-class TableStyleSheet:
+class TableStyleSheet(object):
     """A simple Table stylesheet
     Rules are expressions where cells are defined by the row_index
     and col_index separated by an underscore ('_').
@@ -750,7 +760,7 @@ class TableStyleSheet:
 
 
 
-class TableCellRenderer:
+class TableCellRenderer(object):
     """Defines a simple text renderer
     """
 
@@ -861,7 +871,7 @@ class DocbookRenderer(TableCellRenderer):
             return "<entry>%s</entry>\n" % cell_content
 
 
-class TableWriter:
+class TableWriter(object):
     """A class to write tables
     """
     

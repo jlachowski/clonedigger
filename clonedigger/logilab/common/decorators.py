@@ -17,6 +17,13 @@
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 __docformat__ = "restructuredtext en"
 
 # XXX rewrite so we can use the decorator syntax when keyarg has to be specified

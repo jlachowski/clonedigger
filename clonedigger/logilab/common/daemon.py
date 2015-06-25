@@ -16,13 +16,21 @@
 a daemon mix-in class
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 __revision__ = '$Id: daemon.py,v 1.10 2005-11-22 13:13:01 syt Exp $'
 
 import os, signal, sys, time
 from clonedigger.logilab.common.logger import make_logger, LOG_ALERT, LOG_NOTICE
 
-class DaemonMixIn:
+class DaemonMixIn(object):
     """ mixin to make a daemon from watchers/queriers
     """
 

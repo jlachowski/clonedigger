@@ -2,6 +2,13 @@
 provides a simple readline interface.
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import *
 
 from warnings import warn
 warn('this module is deprecated and will disappear in a near release',
@@ -43,7 +50,7 @@ def client( host, port ):
     sp_thread.start()
     while 1:
         try:
-            line = raw_input() + "\n"
+            line = input() + "\n"
             sock.send( line )
         except EOFError:
             print("Bye")

@@ -1,5 +1,12 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import unicode_literals
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from past.utils import old_div
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -39,7 +46,7 @@ def findDuplicateCode(source_files, report):
 
     if verbose:
         n_sequences = len(sequences_lengths)    
-        avg_seq_length = sum(sequences_lengths)/float(n_sequences)
+        avg_seq_length = old_div(sum(sequences_lengths),float(n_sequences))
         max_seq_length = max(sequences_lengths)
 
         print('%d sequences' %(n_sequences,))
@@ -84,7 +91,7 @@ def findDuplicateCode(source_files, report):
         processed_statements_count = 0
         clusters = []
         ret = {}
-        for h in hash_to_statement.keys():
+        for h in list(hash_to_statement.keys()):
             local_clusters = []
             statements = hash_to_statement[h]
             for statement in statements:
@@ -116,7 +123,7 @@ def findDuplicateCode(source_files, report):
         processed_statements_count = 0
         # clusters_map contain hash values for statements, not unifiers
         # therefore it will work correct even if unifiers are smaller than hashing depth value
-        for h in hash_to_statement.keys():
+        for h in list(hash_to_statement.keys()):
             clusters = clusters_map[h]
             for statement in hash_to_statement[h]:
                 processed_statements_count += 1

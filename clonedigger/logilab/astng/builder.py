@@ -26,6 +26,14 @@ TODO:
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 
@@ -148,7 +156,7 @@ transformer.Transformer = ASTNGTransformer
 
 # ast NG builder ##############################################################
 
-class ASTNGBuilder:
+class ASTNGBuilder(object):
     """provide astng building methods
     """
     
@@ -565,7 +573,7 @@ class ASTNGBuilder:
             elif isdatadescriptor(member):
                 assert isinstance(member, object)
                 object_build_datadescriptor(node, member, name)
-            elif isinstance(member, (int, long, float, str, unicode)) or member is None:
+            elif isinstance(member, (int, int, float, str, str)) or member is None:
                 attach_const_node(node, name, member)
             else:
                 # create an empty node so that the name is actually defined

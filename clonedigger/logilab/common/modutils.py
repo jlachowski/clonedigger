@@ -31,6 +31,16 @@
 :type BUILTIN_MODULES: dict
 :var BUILTIN_MODULES: dictionary with builtin module names has key
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
+from builtins import range
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 
@@ -50,8 +60,8 @@ else:
     PY_COMPILED_EXTS = ('so',)
     STD_LIB_DIR = join(sys.prefix, 'lib', 'python%s' % sys.version[:3])
     
-BUILTIN_MODULES = dict(zip(sys.builtin_module_names,
-                           [1]*len(sys.builtin_module_names)))
+BUILTIN_MODULES = dict(list(zip(sys.builtin_module_names,
+                           [1]*len(sys.builtin_module_names))))
 
 
 class NoSourceFile(Exception):

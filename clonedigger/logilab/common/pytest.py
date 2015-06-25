@@ -50,6 +50,14 @@ the ``optval`` method::
             
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from past.builtins import execfile
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 PYTEST_DOC = """%prog [OPTIONS] [testfile [testpattern]]
 
@@ -78,7 +86,7 @@ import unittest
 
 import imp
 
-import __builtin__
+import builtins
 
 
 try:
@@ -267,7 +275,7 @@ def remove_local_modules_from_sys(testdir):
     we **have** to clean sys.modules to make sure the correct test_utils
     module is ran in B
     """
-    for modname, mod in sys.modules.items():
+    for modname, mod in list(sys.modules.items()):
         if mod is None:
             continue
         if not hasattr(mod, '__file__'):

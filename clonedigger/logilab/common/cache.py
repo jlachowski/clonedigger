@@ -16,10 +16,18 @@
  Cache module, with a least recently used algorithm for the management of the
  deletion of entries.
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 _marker = object()
 
-class Cache:
+class Cache(object):
     """ a dictionnary like cache
 
     inv:
@@ -91,13 +99,13 @@ class Cache:
         self._usage = []
 
     def keys(self):
-        return self.data.keys()
+        return list(self.data.keys())
 
     def items(self):
-        return self.data.items()
+        return list(self.data.items())
 
     def values(self):
-        return self.data.values()
+        return list(self.data.values())
 
     def has_key(self, key):
         return key in self.data

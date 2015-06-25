@@ -19,6 +19,14 @@ extract information from it
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 
@@ -35,7 +43,7 @@ def extend_class(original, addons):
             del brain[special_key]
     original.__dict__.update(brain)
         
-class ASTWalker:
+class ASTWalker(object):
     """a walker visiting a tree in preorder, calling on the handler:
     
     * visit_<class name> on entering a node, where class name is the class of
@@ -110,7 +118,7 @@ class LocalsVisitor(ASTWalker):
                 recurse = 0
         if recurse:
             if hasattr(node, 'locals'):
-                for local_node in node.values():
+                for local_node in list(node.values()):
                     self.visit(local_node)
         if methods[1] is not None:
             return methods[1](node)

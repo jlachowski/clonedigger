@@ -15,6 +15,14 @@
 # 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 """date manipulation helper functions"""
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
 
 import math
 
@@ -68,9 +76,9 @@ else:
         begin = Date(begin.year, begin.month, begin.day)
         end = Date(end.year, end.month, end.day)
         holidays = [strptime(datestr, '%Y-%m-%d')
-                    for datestr in FRENCH_MOBILE_HOLIDAYS.values()]
-        for year in xrange(begin.year, end.year+1):
-            for datestr in FRENCH_FIXED_HOLIDAYS.values():
+                    for datestr in list(FRENCH_MOBILE_HOLIDAYS.values())]
+        for year in range(begin.year, end.year+1):
+            for datestr in list(FRENCH_FIXED_HOLIDAYS.values()):
                 date = strptime(datestr % year, '%Y-%m-%d')
                 if date not in holidays:
                     holidays.append(date)

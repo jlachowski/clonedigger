@@ -52,24 +52,24 @@ class PythonCompilerSourceFile (SourceFile):
                     else:
                         l.append(elt)
                 return l
-            def add_childs(childs):             
+            def add_childs(childs):
                 assert(type(childs) == type([]))
-                for child in childs:                
+                for child in childs:
                     assert(isinstance(child, compiler.ast.Node))
-                    t = rec_build_tree(child, is_statement)     
+                    t = rec_build_tree(child, is_statement)
                     if t.getName() in self.ignored_statements:
                         # TODO move it up
                         continue
                     t.setParent(r)
-                    r.addChild(t)                   
+                    r.addChild(t)
             def add_leaf_child(child, name):
                 assert(not (type(child) == type([])))
-                assert(not isinstance(child, compiler.ast.Node))                                
+                assert(not isinstance(child, compiler.ast.Node))
                 t = AbstractSyntaxTree(repr(child))
                 t.setParent(r)
                 l = PythonNodeLeaf(child)
-                t.ast_node = l 
-                r.addChild(t)               
+                t.ast_node = l
+                r.addChild(t)
                 setattr(r.ast_node, name, l)
                 return t
             def add_leaf_childs(childs, name):
@@ -81,8 +81,8 @@ class PythonCompilerSourceFile (SourceFile):
                     t = AbstractSyntaxTree(repr(child))
                     t.setParent(r)
                     l = PythonNodeLeaf(child)
-                    t.ast_node = l 
-                    r.addChild(t)                   
+                    t.ast_node = l
+                    r.addChild(t)
                     a[i] = l
             def add_leaf_string_childs(childs):
                 assert(type(childs) == type([]))
@@ -90,9 +90,9 @@ class PythonCompilerSourceFile (SourceFile):
                     assert(not isinstance(child, compiler.ast.Node))
                     t = AbstractSyntaxTree(repr(child))
                     t.setParent(t)
-                    r.addChild(t)                   
+                    r.addChild(t)
 
-            if isinstance(compiler_ast_node, compiler.ast.Node):                
+            if isinstance(compiler_ast_node, compiler.ast.Node):
                 name = compiler_ast_node.__class__.__name__
                 if name == 'Function':
                    for prefix in self._func_prefixes:
@@ -105,10 +105,10 @@ class PythonCompilerSourceFile (SourceFile):
                 if compiler_ast_node.lineno:
                     lines = [compiler_ast_node.lineno-1]
                 else:
-                    lines = []      
+                    lines = []
                 r = AbstractSyntaxTree(name, lines, self)
                 r.ast_node = compiler_ast_node
-                if is_statement and compiler_ast_node.lineno: 
+                if is_statement and compiler_ast_node.lineno:
                     r.markAsStatement()
                 is_statement = (name == 'Stmt')
                 if name == "AssAttr":
@@ -125,7 +125,7 @@ class PythonCompilerSourceFile (SourceFile):
                 elif name == "Class":
                     add_leaf_child(compiler_ast_node.name, 'name')
 #                   print '>>>>>>>>>>>>>>>>>>>>', flatten(compiler_ast_node.bases)
-                    add_childs(flatten(compiler_ast_node.bases)) 
+                    add_childs(flatten(compiler_ast_node.bases))
 #                   add_leaf_child(compiler_ast_node.doc, 'doc') we don't want class docs in our tree, do we?
                     add_childs([compiler_ast_node.code])
                 elif name == "Compare":
@@ -160,21 +160,21 @@ class PythonCompilerSourceFile (SourceFile):
                 elif name == "Keyword":
                     add_leaf_child(compiler_ast_node.name, "name")
                     add_childs([compiler_ast_node.expr])
-                elif name == "Lambda": 
+                elif name == "Lambda":
 #                   TODO: uncomment and fix
-                    add_leaf_childs(compiler_ast_node.argnames, "argnames")                    
+                    add_leaf_childs(compiler_ast_node.argnames, "argnames")
                     if compiler_ast_node.defaults == ():
                         compiler_ast_node.defaults = []
-                    add_childs(compiler_ast_node.defaults)              
+                    add_childs(compiler_ast_node.defaults)
                     add_childs([compiler_ast_node.code])
                 elif name == "Name":
                     # the most important one :)
                     add_leaf_child(compiler_ast_node.name, "name")
                 else:
-                    for c in compiler_ast_node.getChildren():               
+                    for c in compiler_ast_node.getChildren():
                         t = rec_build_tree(c, is_statement)
                         if t.getName() in self.ignored_statements:
-                            continue                    
+                            continue
                         t.setParent(r)
                         r.addChild(t)
                 return r

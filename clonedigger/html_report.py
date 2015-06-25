@@ -1,5 +1,14 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import division
+from past.builtins import cmp
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from builtins import *
+from builtins import object
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -31,7 +40,7 @@ from . import anti_unification
 from . import python_compiler
 from .abstract_syntax_tree import AbstractSyntaxTree
 
-class Report:
+class Report(object):
     def __init__(self):
         self._error_info = []
         self._clones = []
@@ -181,7 +190,7 @@ class HTMLReport(Report):
                             def rec_correct_as_string(t1, t2, s1, s2):
                                 def highlight(s):
                                     return '<span style="color: rgb(255, 0, 0);">' + s + '</span>'
-                                class NewAsString:
+                                class NewAsString(object):
                                     def __init__(self, s):
                                         self.s = highlight(s)
                                     def __call__(self):
@@ -204,7 +213,7 @@ class HTMLReport(Report):
 
                             (s1, s2) = (statements[0], statements[1])
                             u = anti_unification.Unifier(s1, s2)
-                            rec_correct_as_string(s1, s2, u.getSubstitutions()[0].getMap().values(), u.getSubstitutions()[1].getMap().values() )
+                            rec_correct_as_string(s1, s2, list(u.getSubstitutions()[0].getMap().values()), list(u.getSubstitutions()[1].getMap().values()) )
                             d = [None, None]
                             for j in (0,1):
                                 d[j] = statements[j].ast_node.as_string()
@@ -273,7 +282,7 @@ clusterize_using_dcup = %s<BR>
         marks_report = ''
         if self._mark_to_statement_hash:
             marks_report += '<P>Top 20 statement marks:'
-            marks = self._mark_to_statement_hash.keys()
+            marks = list(self._mark_to_statement_hash.keys())
             marks.sort(lambda y,x:cmp(len(self._mark_to_statement_hash[x]), len(self._mark_to_statement_hash[y])))
             counter = 0
             for mark in marks[:20]:

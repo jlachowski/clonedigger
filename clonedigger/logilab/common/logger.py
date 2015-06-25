@@ -16,6 +16,15 @@
 Define a logger interface and two concrete loggers : one which prints
 everything on stdout, the other using syslog.
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 from warnings import warn
 warn('logger module is deprecated and will disappear in a future release. \
@@ -66,7 +75,7 @@ def make_logger(method='print', threshold=LOG_DEBUG, sid=None, output=None):
         raise ValueError('Unknown logger method: %r' % method)
 
 
-class AbstractLogger:
+class AbstractLogger(object):
     """logger interface.
     Priorities allow to filter on the importance of events
     An event gets logged if it's priority is lower than the threshold"""
@@ -128,7 +137,7 @@ class PrintLogger(AbstractLogger):
         
     def _writelog(self, priority, message):
         """overridden from AbstractLogger"""
-        if isinstance(message, unicode):
+        if isinstance(message, str):
             message = message.encode(self.encoding, 'replace')
         if self.sid is not None:
             self.output.write('[%s] [%s] %s\n' % (time.asctime(), self.sid,
@@ -155,7 +164,7 @@ class SysLogger(AbstractLogger):
     def _writelog(self, priority, message):
         """overridden from AbstractLogger"""
         import syslog
-        if isinstance(message, unicode):
+        if isinstance(message, str):
             message = message.encode(self.encoding, 'replace')
         syslog.syslog(priority | syslog.LOG_LOCAL7, message)
 

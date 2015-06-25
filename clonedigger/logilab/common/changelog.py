@@ -44,6 +44,14 @@ log title.
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 import sys
 from stat import S_IWRITE
@@ -64,7 +72,7 @@ class Version(tuple):
     correctly printing it as X.Y.Z
     """
     def __new__(klass, versionstr):
-        if isinstance(versionstr, basestring):
+        if isinstance(versionstr, str):
             parsed = [int(i) for i in versionstr.split('.')]
         else:
             parsed = versionstr

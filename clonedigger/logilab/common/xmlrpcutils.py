@@ -15,14 +15,23 @@
  Copyright (c) 2003-2004 LOGILAB S.A. (Paris, FRANCE).
  http://www.logilab.fr/ -- mailto:contact@logilab.fr
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 __revision__ = "$Id: xmlrpcutils.py,v 1.3 2005-11-22 13:13:03 syt Exp $"
 
-import xmlrpclib
+import xmlrpc.client
 from base64 import encodestring
 #from cStringIO import StringIO
 
-ProtocolError = xmlrpclib.ProtocolError
+ProtocolError = xmlrpc.client.ProtocolError
 
 ## class BasicAuthTransport(xmlrpclib.Transport):
 ##     def __init__(self, username=None, password=None):
@@ -66,7 +75,7 @@ ProtocolError = xmlrpclib.ProtocolError
                                                                               
 
 
-class AuthMixin:
+class AuthMixin(object):
     """basic http authentication mixin for xmlrpc transports"""
     
     def __init__(self, username, password, encoding):
@@ -109,10 +118,10 @@ class AuthMixin:
 ##         return self.parse_response(result)
         return self.parse_response(file)
     
-class BasicAuthTransport(AuthMixin, xmlrpclib.Transport):
+class BasicAuthTransport(AuthMixin, xmlrpc.client.Transport):
     """basic http authentication transport"""
     
-class BasicAuthSafeTransport(AuthMixin, xmlrpclib.SafeTransport):
+class BasicAuthSafeTransport(AuthMixin, xmlrpc.client.SafeTransport):
     """basic https authentication transport"""
 
 
@@ -127,5 +136,5 @@ def connect(url, user=None, passwd=None, encoding='ISO-8859-1'):
             transport = BasicAuthTransport(user, passwd, encoding)
     else:
         transport = None
-    server = xmlrpclib.ServerProxy(url, transport, encoding=encoding)
+    server = xmlrpc.client.ServerProxy(url, transport, encoding=encoding)
     return server

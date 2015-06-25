@@ -17,12 +17,21 @@
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
+from builtins import range
+from builtins import *
+from builtins import object
 __docformat__ = "restructuredtext en"
 
 
 # SQLGenerator ################################################################
 
-class SQLGenerator :
+class SQLGenerator(object) :
     """
     Helper class to generate SQL strings to use with python's DB-API
     """
@@ -67,7 +76,7 @@ class SQLGenerator :
         >>> s.insert('test',{'nom':'dupont','prenom':'jean'})
         'INSERT INTO test ( nom, prenom ) VALUES ( %(nom)s, %(prenom)s )'
         """
-        keys = ', '.join(params.keys())
+        keys = ', '.join(list(params.keys()))
         values = ', '.join(["%%(%s)s" % x for x in params])
         sql = 'INSERT INTO %s ( %s ) VALUES ( %s )' % (table, keys, values)
         return sql
@@ -86,7 +95,7 @@ class SQLGenerator :
         'SELECT * FROM test WHERE nom = %(nom)s AND prenom = %(prenom)s'
         """
         sql = 'SELECT * FROM %s' % table
-        where = self.where(params.keys())
+        where = self.where(list(params.keys()))
         if where :
             sql = sql + ' WHERE %s' % where
         return sql
@@ -109,7 +118,7 @@ class SQLGenerator :
         sql = 'SELECT %s FROM %s' % (', '.join(model), ', '.join(table_names))
         if joins and type(joins) != type(''):
             joins = ' AND '.join(joins)
-        where = self.where(params.keys(), joins)
+        where = self.where(list(params.keys()), joins)
         if where :
             sql = sql + ' WHERE %s' % where
         return sql
@@ -125,7 +134,7 @@ class SQLGenerator :
         >>> s.delete('test',{'nom':'dupont','prenom':'jean'})
         'DELETE FROM test WHERE nom = %(nom)s AND prenom = %(prenom)s'
         """
-        where = self.where(params.keys())
+        where = self.where(list(params.keys()))
         sql = 'DELETE FROM %s WHERE %s' % (table, where)
         return sql
 
@@ -145,7 +154,7 @@ class SQLGenerator :
         sql = 'UPDATE %s SET %s WHERE %s' % (table, set, where)
         return sql
 
-class BaseTable:
+class BaseTable(object):
     """
     Another helper class to ease SQL table manipulation
     """

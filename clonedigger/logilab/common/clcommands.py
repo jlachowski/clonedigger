@@ -20,6 +20,12 @@ command'specific
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 # XXX : merge with optparser ? 
 import sys
@@ -91,7 +97,7 @@ def main_usage(status=0, __doc__=None, copyright=DEFAULT_COPYRIGHT):
     """display usage for the main program (ie when no command supplied)
     and exit
     """
-    commands = _COMMANDS.keys()
+    commands = list(_COMMANDS.keys())
     commands.sort()
     doc = __doc__ % ('<command>', '<command arguments>',
                      '''\
@@ -156,7 +162,7 @@ class ListCommandsCommand(Command):
                 print('--help')
                 print('--' + optname)
         else:
-            commands = _COMMANDS.keys()
+            commands = list(_COMMANDS.keys())
             commands.sort()
             for command in commands:
                 cmd = _COMMANDS[command]

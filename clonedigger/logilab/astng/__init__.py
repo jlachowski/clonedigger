@@ -41,6 +41,16 @@ Main modules are:
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import next
+from builtins import str
+from builtins import *
+from builtins import object
 from __future__ import generators
 
 __doctype__ = "restructuredtext en"
@@ -89,11 +99,11 @@ def unpack_infer(stmt, context=None):
     """
     if isinstance(stmt, (List, Tuple)):
         # XXX loosing context
-        return chain(*imap(unpack_infer, stmt.nodes))
+        return chain(*map(unpack_infer, stmt.nodes))
     infered = next(stmt.infer(context))
     if infered is stmt:
         return iter( (stmt,) )
-    return chain(*imap(unpack_infer, stmt.infer(context)))
+    return chain(*map(unpack_infer, stmt.infer(context)))
 
 def copy_context(context):
     if context is not None:
@@ -142,7 +152,7 @@ class Yes(object):
         return self
 YES = Yes()
 
-class Proxy:
+class Proxy(object):
     """a simple proxy object"""
     def __init__(self, proxied):
         self._proxied = proxied
@@ -206,7 +216,7 @@ class Instance(Proxy):
                 return InstanceMethod(attr)
             else:
                 return attr
-        return imap(wrap, attrs)
+        return map(wrap, attrs)
         
     def infer_call_result(self, caller, context=None):
         """infer what's a class instance is returning when called"""

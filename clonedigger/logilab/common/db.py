@@ -32,6 +32,14 @@ as listing existing users or databases, creating database... Get the
 helper for your database using the `get_adv_func_helper` function.
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 import sys
 import re
@@ -95,7 +103,7 @@ def _import_driver_module(driver, drivers, imported_elements=None, quiet=True):
 
 ## Connection and cursor wrappers #############################################
         
-class SimpleConnectionWrapper:
+class SimpleConnectionWrapper(object):
     """A simple connection wrapper in python to decorated C-level connections
     with additional attributes
     """
@@ -137,7 +145,7 @@ class PyConnection(SimpleConnectionWrapper):
 
 
 
-class PyCursor:
+class PyCursor(object):
     """A simple cursor wrapper in python (useful for profiling)"""
     def __init__(self, cursor):
         self._cursor = cursor
@@ -172,7 +180,7 @@ class PyCursor:
 
 ## Adapters list ##############################################################
     
-class DBAPIAdapter:
+class DBAPIAdapter(object):
     """Base class for all DBAPI adpaters"""
 
     def __init__(self, native_module, pywrap=False):
@@ -212,7 +220,7 @@ class DBAPIAdapter:
         assert typecode is not None, self # dbapi module isn't supporting type codes, override to return value directly
         if typecode == self.STRING:
             if isinstance(value, str):
-                return unicode(value, encoding, 'replace')
+                return str(value, encoding, 'replace')
         elif typecode == self.BOOLEAN:
             return bool(value)
         elif typecode == self.BINARY and not binarywrap is None:
@@ -342,7 +350,7 @@ class _PySqlite2Adapter(DBAPIAdapter):
         sqlite._lc_initialized = 1
 
         # bytea type handling
-        from StringIO import StringIO
+        from io import StringIO
         def adapt_bytea(data):
             return data.getvalue()
         sqlite.register_adapter(StringIO, adapt_bytea)
@@ -409,7 +417,7 @@ class _PySqlite2Adapter(DBAPIAdapter):
                     kwargss = tuple(kwargss)
                 self.__class__.__bases__[0].executemany(self, self._replace_parameters(sql, kwargss[0]), kwargss)
                     
-        class PySqlite2CnxWrapper:
+        class PySqlite2CnxWrapper(object):
             def __init__(self, cnx):
                 self._cnx = cnx
                 
@@ -468,19 +476,19 @@ class _MySqlDBAdapter(DBAPIAdapter):
             times.DateTimeDeltaType = mxdt.DateTimeDeltaType
             
     def connect(self, host='', database='', user='', password='', port=None,
-                unicode=True, charset='utf8'):
+                str=True, charset='utf8'):
         """Handles mysqldb connexion format
         the unicode named argument asks to use Unicode objects for strings
         in result sets and query parameters
         """
         kwargs = {'host' : host or '', 'db' : database,
                   'user' : user, 'passwd' : password,
-                  'use_unicode' : unicode}
+                  'use_unicode' : str}
         # MySQLdb doesn't support None port
         if port:
             kwargs['port'] = int(port)
         cnx = self._native_module.connect(**kwargs)
-        if unicode:
+        if str:
             if charset.lower() == 'utf-8':
                 charset = 'utf8'
             cnx.set_character_set(charset)
@@ -500,7 +508,7 @@ class _MySqlDBAdapter(DBAPIAdapter):
             # XXX: what about other encodings ??
             if maxsize in (16777215, 50331645): # mediumtext (2**24 - 1)
                 if isinstance(value, str):
-                    return unicode(value, encoding)
+                    return str(value, encoding)
                 return value
             #if maxsize == 255: # tinyblob (2**8 - 1)
             #    return value

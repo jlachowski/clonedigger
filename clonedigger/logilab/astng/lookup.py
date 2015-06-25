@@ -28,10 +28,16 @@ ilookup return an iterator on infered values
 
 from __future__ import generators
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 __docformat__ = "restructuredtext en"
 
-import __builtin__
+import builtins
 
 from clonedigger.logilab.astng.utils import are_exclusive
 from clonedigger.logilab.astng import nodes, MANAGER, _infer_stmts, copy_context

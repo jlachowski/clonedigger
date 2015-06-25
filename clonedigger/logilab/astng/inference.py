@@ -18,6 +18,17 @@
 :copyright: 2003-2008 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import division
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import next
+from builtins import range
+from builtins import *
+from past.utils import old_div
+from builtins import object
 
 from __future__ import generators
 
@@ -94,7 +105,7 @@ nodes.EmptyNode.infer = path_wrapper(infer_empty_node)
     
 
 
-class CallContext:
+class CallContext(object):
     """when infering a function call, this class is used to remember values
     given as argument
     """
@@ -476,7 +487,7 @@ def infer_mul(self, context=None):
 nodes.Mul.infer = path_wrapper(infer_mul)
 
 def infer_div(self, context=None):
-    return _infer_operator(self, context=context, impl=lambda a,b: a/b, meth='__div__')
+    return _infer_operator(self, context=context, impl=lambda a,b: old_div(a,b), meth='__div__')
 nodes.Div.infer = path_wrapper(infer_div)
     
 # .infer_call_result method ###################################################
@@ -698,7 +709,7 @@ nodes.Tuple.iter_stmts = tl_iter_stmts
 #Dict.getitem = getitem XXX
         
 def dict_getitem(self, key):
-    for i in xrange(0, len(self.items), 2):
+    for i in range(0, len(self.items), 2):
         for inferedkey in self.items[i].infer():
             if inferedkey is YES:
                 continue

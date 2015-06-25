@@ -18,13 +18,21 @@
 a way to create simple reports using python objects, primarly designed to be
 formatted as text and html
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 from __future__ import generators
 
 import sys
 from os import linesep
-from cStringIO import StringIO
-from StringIO import StringIO as UStringIO
+from io import StringIO
+from io import StringIO as UStringIO
 
 
 def get_nodes(node, klass):

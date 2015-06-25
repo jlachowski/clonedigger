@@ -19,6 +19,13 @@ A micro report is a tree of layout and content objects
 :copyright: 2004-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 __docformat__ = "restructuredtext en"
 
@@ -80,7 +87,7 @@ class Text(BaseComponent):
         super(Text, self).__init__(**kwargs)
         #if isinstance(data, unicode):
         #    data = data.encode('ascii')
-        assert isinstance(data, (str, unicode)), data.__class__
+        assert isinstance(data, (str, str)), data.__class__
         self.escaped = escaped
         self.data = data
 

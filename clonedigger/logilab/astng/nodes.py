@@ -37,6 +37,15 @@ on From and Import :
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from builtins import object
 
 # This file have been modified by Anatoly Zapadinski to meet the Clone Digger's needs
 
@@ -59,27 +68,27 @@ try:
     # introduced in python 2.4
     from compiler.ast import GenExpr, GenExprFor, GenExprIf, GenExprInner
 except:
-    class GenExpr:
+    class GenExpr(object):
         """dummy GenExpr node, shouldn't be used since py < 2.4"""
-    class GenExprFor: 
+    class GenExprFor(object): 
         """dummy GenExprFor node, shouldn't be used since py < 2.4"""
-    class GenExprIf: 
+    class GenExprIf(object): 
         """dummy GenExprIf node, shouldn't be used since py < 2.4"""
-    class GenExprInner: 
+    class GenExprInner(object): 
         """dummy GenExprInner node, shouldn't be used since py < 2.4"""
 
 try:
     # introduced in python 2.4
     from compiler.ast import Decorators
 except:
-    class Decorators:
+    class Decorators(object):
         """dummy Decorators node, shouldn't be used since py < 2.4"""
 
 try:
     # introduced in python 2.5
     from compiler.ast import With
 except:
-    class With:
+    class With(object):
         """dummy With node, shouldn't be used since py < 2.5"""
 
 from clonedigger.logilab.astng._exceptions import NotFoundError, InferenceError
@@ -94,7 +103,7 @@ INFER_NEED_NAME_STMTS = (From, Import, Global, TryExcept)
 
 # Node  ######################################################################
 
-class NodeNG:
+class NodeNG(object):
     """/!\ this class should not be used directly /!\ it's
     only used as a methods and attribute container, and update the
     original class from the compiler.ast module using its dictionnary

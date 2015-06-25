@@ -18,6 +18,16 @@ scripts
 :copyright: 2003-2008 LOGILAB S.A. (Paris, FRANCE)
 :contact:   http://www.logilab.fr/ -- mailto:python-projects@logilab.org
 """
+from __future__ import division
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from past.utils import old_div
+from builtins import object
 __docformat__ = "restructuredtext en"
 
 import os        
@@ -120,7 +130,7 @@ def find(directory, exts, exclude=False, blacklist=STD_BLACKLIST):
     :return:
       the list of all matching files
     """
-    if isinstance(exts, basestring):
+    if isinstance(exts, str):
         exts = (exts,)
     if exclude:
         def match(filename, exts):
@@ -153,7 +163,7 @@ def find(directory, exts, exclude=False, blacklist=STD_BLACKLIST):
     return files
 
 
-class Execute:
+class Execute(object):
     """This is a deadlock safe version of popen2 (no stdin), that returns
     an object with errorlevel, out and err
     """
@@ -192,7 +202,7 @@ class ProgressBar(object):
     """a simple text progression bar"""
     
     def __init__(self, nbops, size=20., stream=sys.stdout):
-        self._dotevery = max(nbops / size, 1)
+        self._dotevery = max(old_div(nbops, size), 1)
         self._fstr = '\r[%-20s]'
         self._dotcount, self._dots = 1, []
         self._stream = stream

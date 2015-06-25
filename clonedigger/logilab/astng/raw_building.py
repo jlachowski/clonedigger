@@ -19,6 +19,13 @@
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 __docformat__ = "restructuredtext en"
 
@@ -218,7 +225,7 @@ def _base_class_object_build(node, member, basenames, name=None):
     except:
         pass
     else:
-        for name, obj in instdict.items():
+        for name, obj in list(instdict.items()):
             valnode = nodes.EmptyNode()
             valnode.object = obj
             valnode.parent = klass

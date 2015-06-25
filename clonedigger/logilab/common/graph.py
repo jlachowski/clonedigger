@@ -6,6 +6,15 @@
 :copyright: 2003-2007 LOGILAB S.A. (Paris, FRANCE), all rights reserved.
 :contact: http://www.logilab.fr/ -- mailto:contact@logilab.fr
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 __metaclass__ = type
@@ -28,7 +37,7 @@ def target_info_from_filename(filename):
     return storedir, basename, target
 
 
-class DotBackend:
+class DotBackend(object):
     """Dot File backend"""
     def __init__(self, graphname, rankdir=None, size=None, ratio=None, charset='utf-8'):
         self.graphname = graphname
@@ -72,7 +81,7 @@ class DotBackend:
         dotfile = dotfile or ('%s.dot' % self.graphname)
         dot_sourcepath = osp.join(storedir, dotfile)
         pdot = file(dot_sourcepath, 'w')
-        if isinstance(self.source, unicode):
+        if isinstance(self.source, str):
             pdot.write(self.source.encode('UTF8'))
         else:
             pdot.write(self.source)
@@ -91,21 +100,21 @@ class DotBackend:
         
         authorized props: see http://www.graphviz.org/doc/info/attrs.html
         """
-        attrs = ['%s="%s"' % (prop, value) for prop, value in props.items()]
+        attrs = ['%s="%s"' % (prop, value) for prop, value in list(props.items())]
         self.emit('edge [%s];' % ", ".join(attrs))
         self.emit('%s -> %s' % (normalize_node_id(name1), normalize_node_id(name2)))
 
     def emit_node(self, name, **props):
         """authorized props: see http://www.graphviz.org/doc/info/attrs.html
         """
-        attrs = ['%s="%s"' % (prop, value) for prop, value in props.items()]
+        attrs = ['%s="%s"' % (prop, value) for prop, value in list(props.items())]
         self.emit('%s [%s];' % (normalize_node_id(name), ", ".join(attrs)))
 
 def normalize_node_id(nid):
     """returns a suitable DOT node id for `nid`"""
     return '"%s"' % nid
 
-class GraphGenerator:
+class GraphGenerator(object):
     def __init__(self, backend):
         # the backend is responsible to output the graph is a particular format
         self.backend = backend
@@ -134,7 +143,7 @@ def get_cycles(graph_dict, vertices=None):
         return ()
     result = []
     if vertices is None:
-        vertices = graph_dict.keys()
+        vertices = list(graph_dict.keys())
     for vertice in vertices:
         _get_cycles(graph_dict, vertice, [], result)
     return result

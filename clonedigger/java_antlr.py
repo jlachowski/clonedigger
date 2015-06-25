@@ -1,5 +1,11 @@
 from __future__ import print_function
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 #    Copyright 2008 Peter Bulychev
 #    http://clonedigger.sourceforge.net
 #
@@ -32,7 +38,7 @@ class JavaANTLRSourceFile (SourceFile):
     def __init__(self, file_name):
         SourceFile.__init__(self, file_name)
 
-        class ExpatHandler:
+        class ExpatHandler(object):
             def __init__(self, start_node, parent):
                 self.parent = parent
                 self.stack = [start_node]

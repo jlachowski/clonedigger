@@ -25,6 +25,14 @@ TODO: _ advanced search
       _ profile code
       _ use mxTextTools ?
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
+from builtins import object
 
 from warnings import warn
 warn('this module is deprecated and will disappear in a near release',
@@ -50,7 +58,7 @@ def split(index, string):
     return string[:index], string[index], string[index+1:]
 
 
-class PatriciaNode:
+class PatriciaNode(object):
     """a PATRICIA trie node
     """
     
@@ -129,7 +137,7 @@ class PatriciaNode:
                         for sfx in self.edges[e].pfx_search(sfx, depth)]
         else:
             if depth != 0:
-                for e, child in self.edges.items():
+                for e, child in list(self.edges.items()):
                     search = child.pfx_search('', depth-1-len(self.value))
                     sfxs += ['%s%s%s' % (self.value, e, sfx)
                              for sfx in search]
@@ -141,15 +149,15 @@ class PatriciaNode:
     def __str__(self, indent=''):
         node_str = ''.join([' %s%s:\n%s' % (indent, key,
                                             a.__str__('  %s' % indent))
-                            for key, a in self.edges.items()])
+                            for key, a in list(self.edges.items())])
         return '%s%s, %s\n%s' % (indent, self.value, self.datas, node_str)
 
     def __repr__(self):
         return '<PatriciaNode id=%s value=%s childs=%s datas=%s>' % (
-            id(self), self.value, self.edges.keys(), self.datas)
+            id(self), self.value, list(self.edges.keys()), self.datas)
 
 
-class PatriciaTrie:
+class PatriciaTrie(object):
     """ wrapper class for a patricia tree
     delegates to the root of the tree (PatriciaNode)
     """

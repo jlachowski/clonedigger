@@ -21,6 +21,14 @@ from various source and using a cache of built modules)
 :contact:   mailto:thenault@gmail.com
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 
@@ -263,7 +271,7 @@ class ASTNGManager(OptionsProviderMixIn):
     
 
 
-class Package:
+class Package(object):
     """a package using a dictionary like interface
 
     load submodules lazily, as they are needed
@@ -292,10 +300,10 @@ class Package:
         """
         if self.__subobjects is None:
             try:
-                self.__subobjects = dict.fromkeys(self.keys())
+                self.__subobjects = dict.fromkeys(list(self.keys()))
             except AttributeError:
                 # python <= 2.3
-                self.__subobjects = dict([(k, None) for k in self.keys()])
+                self.__subobjects = dict([(k, None) for k in list(self.keys())])
         obj = self.__subobjects[name]
         if obj is None:
             objpath = join(self.path, name)
@@ -333,10 +341,10 @@ class Package:
         return self.__keys[:]
     
     def values(self):
-        return [self.get_subobject(name) for name in self.keys()]
+        return [self.get_subobject(name) for name in list(self.keys())]
         
     def items(self):
-        return zip(self.keys(), self.values())
+        return list(zip(list(self.keys()), list(self.values())))
     
     def has_key(self, name):
         return bool(self.get(name))
@@ -352,10 +360,10 @@ class Package:
     def __contains__(self, name):
         return name in self
     def __iter__(self):
-        return iter(self.keys())
+        return iter(list(self.keys()))
     
 
-class Project:
+class Project(object):
     """a project handle a set of modules / packages"""
     def __init__(self, name=''):
         self.name = name

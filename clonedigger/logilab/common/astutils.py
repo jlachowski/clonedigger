@@ -15,6 +15,14 @@
 # 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 """Some usefull functions to manipulate ast tuples
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import *
 
 from warnings import warn
 warn('this module has been moved into logilab.astng and will disappear from \
@@ -77,7 +85,7 @@ def cvrtr(tuple):
                 txt = 'symbol.'+symbol.sym_name[tuple[0]]
         except:
             txt =  'Unknown token/symbol'
-        return [txt] + map(cvrtr, tuple[1:])
+        return [txt] + list(map(cvrtr, tuple[1:]))
     else:
         return tuple
 

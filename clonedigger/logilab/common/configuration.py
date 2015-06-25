@@ -69,6 +69,16 @@ config.generate_config()
 
 from __future__ import generators 
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import input
+from builtins import str
+from builtins import range
+from builtins import *
+from builtins import object
 
 __docformat__ = "restructuredtext en"
 __all__ = ('OptionsManagerMixIn', 'OptionsProviderMixIn',
@@ -80,7 +90,7 @@ import sys
 import re
 from os.path import exists
 from copy import copy
-from ConfigParser import ConfigParser, NoOptionError, NoSectionError
+from configparser import ConfigParser, NoOptionError, NoSectionError
 
 from clonedigger.logilab.common.compat import set
 from clonedigger.logilab.common.textutils import normalize_text, unquote
@@ -190,13 +200,13 @@ def input_password(optdict, question='password:'):
         print('password mismatch, try again')
 
 def input_string(optdict, question):
-    value = raw_input(question).strip()
+    value = input(question).strip()
     return value or None
 
 def _make_input_function(opttype):
     def input_validator(optdict, question):
         while True:
-            value = raw_input(question)
+            value = input(question)
             if not value.strip():
                 return None
             try:
@@ -211,7 +221,7 @@ INPUT_FUNCTIONS = {
     'password': input_password,
     }
 
-for opttype in VALIDATORS.keys():
+for opttype in list(VALIDATORS.keys()):
     INPUT_FUNCTIONS.setdefault(opttype, _make_input_function(opttype))
     
 def expand_default(self, option):
@@ -258,13 +268,13 @@ def format_option_value(optdict, value):
     if isinstance(value, (list, tuple)):
         value = ','.join(value)
     elif isinstance(value, dict):
-        value = ','.join(['%s:%s' % (k,v) for k,v in value.items()])    
+        value = ','.join(['%s:%s' % (k,v) for k,v in list(value.items())])    
     elif hasattr(value, 'match'): # optdict.get('type') == 'regexp'
         # compiled regexp
         value = value.pattern
     elif optdict.get('type') == 'yn':
         value = value and 'yes' or 'no'
-    elif isinstance(value, (str, unicode)) and value.isspace():
+    elif isinstance(value, (str, str)) and value.isspace():
         value = "'%s'" % value
     return value
 
@@ -391,7 +401,7 @@ class OptionsManagerMixIn(object):
             args.append('-' + opt_dict['short'])
             del opt_dict['short']
         available_keys = set(self._optik_parser.option_class.ATTRS)
-        for key in opt_dict.keys():
+        for key in list(opt_dict.keys()):
             if not key in available_keys:
                 opt_dict.pop(key)
         return args, opt_dict
@@ -502,7 +512,7 @@ class OptionsManagerMixIn(object):
     def load_configuration(self, **kwargs):
         """override configuration according to given parameters
         """
-        for opt_name, opt_value in kwargs.items():
+        for opt_name, opt_value in list(kwargs.items()):
             opt_name = opt_name.replace('_', '-')
             provider = self._all_options[opt_name]
             provider.set_option(opt_name, opt_value)
@@ -525,9 +535,9 @@ class OptionsManagerMixIn(object):
             else:
                 args = list(args)
             (options, args) = self._optik_parser.parse_args(args=args)
-            for provider in self._nocallback_options.keys():
+            for provider in list(self._nocallback_options.keys()):
                 config = provider.config
-                for attr in config.__dict__.keys():
+                for attr in list(config.__dict__.keys()):
                     value = getattr(options, attr, None)
                     if value is None:
                         continue
@@ -713,7 +723,7 @@ class OptionsProviderMixIn(object):
                 (optname, optdict, self.option_value(optname)))
         if None in sections:
             yield None, sections.pop(None)
-        for section, options in sections.items():
+        for section, options in list(sections.items()):
             yield section.upper(), options
        
 
@@ -743,7 +753,7 @@ class ConfigurationMixIn(OptionsManagerMixIn, OptionsProviderMixIn):
         options_by_group = {}
         for optname, optdict in options:
             options_by_group.setdefault(optdict.get('group', self.name.upper()), []).append((optname, optdict))
-        for group, options in options_by_group.items():
+        for group, options in list(options_by_group.items()):
             self.add_option_group(group, None, options, self)
         self.options += tuple(options)
         

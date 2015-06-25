@@ -1,4 +1,12 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import range
+from builtins import *
+from builtins import object
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -37,13 +45,13 @@ class FreeVariable(AbstractSyntaxTree):
 #       self._childs = []
         AbstractSyntaxTree.__init__(self, name)
 
-class Substitution:
+class Substitution(object):
     def __init__(self, initial_value = None):
         if initial_value == None:
             initial_value = {}
         self._map = initial_value
     def substitute(self, tree, without_copying=False):  
-        if tree in self._map.keys():
+        if tree in list(self._map.keys()):
             return self._map[tree]
         else:
             if isinstance(tree, FreeVariable):
@@ -60,22 +68,22 @@ class Substitution:
         return self._map
     def getSize(self):
         ret = 0
-        for (u, tree) in self.getMap().items():
+        for (u, tree) in list(self.getMap().items()):
             ret += tree.getSize(False) - free_variable_cost
         return ret
 
-class Unifier:
+class Unifier(object):
     def __init__(self, t1, t2, ignore_parametrization=False):
         def combineSubs(node, s, t):
             # s and t are 2-tuples
-            assert(s[0].getMap().keys() == s[1].getMap().keys())
-            assert(t[0].getMap().keys() == t[1].getMap().keys())
+            assert(list(s[0].getMap().keys()) == list(s[1].getMap().keys()))
+            assert(list(t[0].getMap().keys()) == list(t[1].getMap().keys()))
             newt = (copy.copy(t[0]), copy.copy(t[1]))
             relabel = {}
-            for si in s[0].getMap().keys():
+            for si in list(s[0].getMap().keys()):
                 if not ignore_parametrization:
                     foundone = False
-                    for ti in t[0].getMap().keys():
+                    for ti in list(t[0].getMap().keys()):
                         if (s[0].getMap()[si] == t[0].getMap()[ti]) and (s[1].getMap()[si] == t[1].getMap()[ti]): 
                             relabel[si] = ti
                             foundone = True
@@ -112,7 +120,7 @@ class Unifier:
     def getSize(self):
         return sum([s.getSize() for s in self.getSubstitutions()])
 
-class Cluster:
+class Cluster(object):
     count = 0
     def __init__(self, tree=None):
         if tree:

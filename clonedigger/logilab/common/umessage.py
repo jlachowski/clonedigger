@@ -1,4 +1,13 @@
 """unicode email support"""
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import *
+from builtins import object
 
 import email
 from email.Utils import parseaddr, parsedate
@@ -14,7 +23,7 @@ def decode_QP(string):
     for decoded, charset in decode_header(string):
         if charset is None:
             charset = 'iso-8859-15'
-        parts.append(unicode(decoded, charset, 'replace'))
+        parts.append(str(decoded, charset, 'replace'))
 
     return u' '.join(parts)
 
@@ -30,7 +39,7 @@ def message_from_string(string):
     except email.Errors.MessageParseError:
         return ''
     
-class UMessage:
+class UMessage(object):
     """Encapsulates an email.Message instance and returns only unicode objects"""
 
     def __init__(self, message):
@@ -60,7 +69,7 @@ class UMessage:
             charset = message.get_content_charset() or 'iso-8859-1'
             if charset == 'unknown-8bit':
                 charset = 'iso-8859-1'
-            return unicode(payload or '', charset)
+            return str(payload or '', charset)
         else:
             payload = UMessage(message.get_payload(index, decode))
         return payload
@@ -76,17 +85,17 @@ class UMessage:
             yield UMessage(part)
     
     def get_content_maintype(self):
-        return unicode(self.message.get_content_maintype())
+        return str(self.message.get_content_maintype())
 
     def get_content_type(self):
-        return unicode(self.message.get_content_type())
+        return str(self.message.get_content_type())
 
     def get_filename(self, failobj=None):
         value = self.message.get_filename(failobj)
         if value is failobj:
             return value
         try:
-            return unicode(value)
+            return str(value)
         except UnicodeDecodeError:
             return u'error decoding filename'
 
@@ -95,7 +104,7 @@ class UMessage:
     def headers(self):
         """return an unicode string containing all the message's headers"""
         values = []
-        for header in self.message.keys():
+        for header in list(self.message.keys()):
             values.append(u'%s: %s' % (header, self.get(header)))
         return '\n'.join(values)
 

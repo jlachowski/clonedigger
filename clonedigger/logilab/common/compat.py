@@ -18,6 +18,17 @@
 """some wrapper around some builtins introduced in python 2.3, 2.4 and
 2.5, making them available in for earlier versions of python.
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from past.builtins import cmp
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import next
+from builtins import *
+from builtins import object
 from __future__ import generators
 
 from warnings import warn
@@ -41,7 +52,7 @@ except NameError:
                     self._data[v] = 1
 
             def __or__(self, other):
-                result = self.__class__(self._data.keys())
+                result = self.__class__(list(self._data.keys()))
                 for val in other:
                     result.add(val)
                 return result
@@ -55,15 +66,15 @@ except NameError:
                 return result
             
             def __sub__(self, other):
-                result = self.__class__(self._data.keys())
+                result = self.__class__(list(self._data.keys()))
                 for val in other:
                     if val in self._data:
                         result.remove(val)
                 return result
             
             def __cmp__(self, other):
-                keys = self._data.keys()
-                okeys = other._data.keys()
+                keys = list(self._data.keys())
+                okeys = list(other._data.keys())
                 keys.sort()
                 okeys.sort()
                 return cmp(keys, okeys)
@@ -72,7 +83,7 @@ except NameError:
                 return len(self._data)
 
             def __repr__(self):
-                elements = self._data.keys()
+                elements = list(self._data.keys())
                 return 'lcc.%s(%r)' % (self.__class__.__name__, elements)
             __str__ = __repr__
 
@@ -127,11 +138,11 @@ Set = class_renamed('Set', set, 'logilab.common.compat.Set is deprecated, '
                     'use logilab.common.compat.set instead')
 
 try:
-    from itertools import izip, chain, imap
+    from itertools import chain
 except ImportError:
     # from itertools documentation ###
     def izip(*iterables):
-        iterables = map(iter, iterables)
+        iterables = list(map(iter, iterables))
         while iterables:
             result = [next(i) for i in iterables]
             yield tuple(result)
@@ -142,7 +153,7 @@ except ImportError:
                 yield element
                 
     def imap(function, *iterables):
-        iterables = map(iter, iterables)
+        iterables = list(map(iter, iterables))
         while True:
             args = [next(i) for i in iterables]
             if function is None:

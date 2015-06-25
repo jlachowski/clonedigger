@@ -1,3 +1,13 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from builtins import *
+from builtins import object
 #    Copyright 2008 Peter Bulychev
 #    http://clonedigger.sourceforge.net
 #
@@ -17,13 +27,13 @@
 #   along with Clone Digger.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class SuffixTree:    
-    class StringPosition:
+class SuffixTree(object):    
+    class StringPosition(object):
         def __init__(self, string, position,prevelem):
             self.string = string
             self.position = position
             self.prevelem = prevelem
-    class SuffixTreeNode:
+    class SuffixTreeNode(object):
         def __init__(self):
             self.childs = {} #
             self.string_positions = []
@@ -76,19 +86,19 @@ class SuffixTree:
                     s1 = node.ending_strings[i]
                     s2 = node.ending_strings[j]
                     check_left_diverse_and_add(s1, s2, 0)
-            for i in range(len(node.childs.keys())):
+            for i in range(len(list(node.childs.keys()))):
                 for j in range(i):
-                    c1 = node.childs.keys()[i]
-                    c2 = node.childs.keys()[j]
+                    c1 = list(node.childs.keys())[i]
+                    c2 = list(node.childs.keys())[j]
                     for s1 in node.childs[c1].string_positions + node.childs[c1].ending_strings:
                         for s2 in node.childs[c2].string_positions + node.childs[c2].ending_strings:
                             check_left_diverse_and_add(s1, s2, 1)
-        for (code, child) in node.childs.items():
+        for (code, child) in list(node.childs.items()):
             r += self.getBestMaxSubstrings(threshold - f(code), f, f_elem, child, initial_threshold)
         return r
 
 if __name__ == '__main__':
-    class Elem:
+    class Elem(object):
         def __init__(self, code):
             self._code = code
         def getCode(self):

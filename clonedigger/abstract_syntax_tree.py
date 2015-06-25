@@ -1,4 +1,13 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import range
+from builtins import *
+from builtins import object
 #    Copyright 2008 Peter Bulychev
 #
 #    This file is part of Clone Digger.
@@ -22,13 +31,13 @@ from . import arguments
 
 free_variable_cost = 0.5
 
-class ParseError:    
+class ParseError(object):    
     def __init__(self, descr):
         self._descr = descr
     def __str__(self):
         return self._descr
 
-class SourceFile:        
+class SourceFile(object):        
     size_threshold = 5
     distance_threshold = 5
     def __init__(self, file_name):      
@@ -57,7 +66,7 @@ class SourceFile:
     def getFileName(self):
         return self._file_name
 
-class AbstractSyntaxTree:
+class AbstractSyntaxTree(object):
     def __init__(self, name=None, line_numbers=[], source_file=None):
         self._childs = []
         self._line_numbers= line_numbers
@@ -226,7 +235,7 @@ class AbstractSyntaxTree:
             return r
         return rec_calc_size(self)
 
-class StatementSequence:
+class StatementSequence(object):
     def __init__(self, sequence = []):
         self._sequence = []
         self._source_file = None
@@ -285,7 +294,7 @@ class StatementSequence:
             covered.update(t.getCoveredLineNumbers())
         return len(covered)
 
-class PairSequences:
+class PairSequences(object):
     def __init__(self, sequences):
         self._sequences = sequences
     def __getitem__(self, *args):

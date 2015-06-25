@@ -28,6 +28,12 @@ Example:
 With mymod.build that defines two functions run and add_options
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 # XXX merge with optik_ext ? merge with clcommands ? 
 
@@ -52,7 +58,7 @@ class OptionParser(optparse.OptionParser):
     def print_main_help(self):
         optparse.OptionParser.print_help(self)
         print('\ncommands:')
-        for cmdname, (_, help) in self._commands.items():
+        for cmdname, (_, help) in list(self._commands.items()):
             print('% 10s - %s' % (cmdname, help))
         
     def parse_command(self, args):
@@ -74,7 +80,7 @@ class OptionParser(optparse.OptionParser):
         # optparse inserts self.description between usage and options help
         self.description = help
         if isinstance(mod_or_f, str):
-            exec 'from %s import run, add_options' % mod_or_f
+            exec('from %s import run, add_options' % mod_or_f)
 	else:
 	    run, add_options = mod_or_f
         add_options(self)

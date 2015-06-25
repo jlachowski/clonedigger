@@ -15,6 +15,15 @@
  
 a generic visitor abstract implementation
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import next
+from builtins import *
+from builtins import object
 
 def no_filter(_):
     return 1
@@ -29,7 +38,7 @@ class FilteredIterator(object):
             filter_func = no_filter
         self._list = list_func(node, filter_func)
         
-    def next(self):
+    def __next__(self):
         try:
             return self._list.pop(0)
         except :

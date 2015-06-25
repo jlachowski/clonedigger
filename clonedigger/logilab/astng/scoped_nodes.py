@@ -24,6 +24,17 @@ below.
 :copyright: 2003-2007 Sylvain Thenault
 :contact:   mailto:thenault@gmail.com
 """
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
+from builtins import next
+from builtins import range
+from builtins import *
+from builtins import object
 from __future__ import generators
 
 __doctype__ = "restructuredtext en"
@@ -115,13 +126,13 @@ class LocalsDictMixIn(object):
         """method from the `dict` interface returning an iterator on
         `self.keys()`
         """
-        return iter(self.keys())
+        return iter(list(self.keys()))
     
     def keys(self):
         """method from the `dict` interface returning a tuple containing
         locally defined names
         """
-        return self.locals.keys()
+        return list(self.locals.keys())
 ##         associated to nodes which are instance of `Function` or
 ##         `Class`
 ##         """
@@ -140,14 +151,14 @@ class LocalsDictMixIn(object):
         """method from the `dict` interface returning a tuple containing
         locally defined nodes which are instance of `Function` or `Class`
         """
-        return [self[key] for key in self.keys()]
+        return [self[key] for key in list(self.keys())]
     
     def items(self):
         """method from the `dict` interface returning a list of tuple
         containing each locally defined name with its associated node,
         which is an instance of `Function` or `Class`
         """
-        return zip(self.keys(), self.values())
+        return list(zip(list(self.keys()), list(self.values())))
 
     def has_key(self, name):
         """method from the `dict` interface returning True if the given
@@ -283,7 +294,7 @@ class ModuleNG(object):
             try:
                 return living.__all__
             except AttributeError:
-                return [name for name in living.__dict__.keys()
+                return [name for name in list(living.__dict__.keys())
                         if not name.startswith('_')]
         # else lookup the astng
         try:
@@ -294,7 +305,7 @@ class ModuleNG(object):
             # XXX should admit we have lost if there is something like
             # __all__ that we've not been able to analyse (such as
             # dynamically constructed __all__)
-            return [name for name in self.keys()
+            return [name for name in list(self.keys())
                     if not name.startswith('_')]
 
 extend_class(Module, ModuleNG)
@@ -673,7 +684,7 @@ class ClassNG(object):
                 
     def mymethods(self):
         """return an iterator on all methods defined in the class"""
-        for member in self.values():
+        for member in list(self.values()):
             if isinstance(member, Function):
                 yield member
                 

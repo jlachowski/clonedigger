@@ -4,6 +4,12 @@ allows *one* client to connect and provides a command line interpreter
 allowing the remote client to explore the process on the fly
 """
 from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import *
 
 from warnings import warn
 warn('this module is deprecated and will disappear in a near release',
@@ -12,7 +18,7 @@ warn('this module is deprecated and will disappear in a near release',
 __revision__ = '$Id: monserver.py,v 1.2 2005-11-22 13:13:02 syt Exp $'
 
 import threading
-import SocketServer
+import socketserver
 import traceback
 import code
 import sys
@@ -57,14 +63,14 @@ class MonitorInterpreter(code.InteractiveConsole):
         return line
         
 
-class MonitorRequestHandler(SocketServer.BaseRequestHandler):
+class MonitorRequestHandler(socketserver.BaseRequestHandler):
     """Request handler for remote interpreter"""
     def __init__(self, request, clientaddress, server ):
         self.locals = {}
         self.globals = globals().copy()
         self.wfile = request.makefile("w")
         self.rfile = request.makefile("r")
-        SocketServer.BaseRequestHandler.__init__(self, request, clientaddress,
+        socketserver.BaseRequestHandler.__init__(self, request, clientaddress,
                                                  server )
         
     def handle(self):
@@ -94,7 +100,7 @@ class Monitor(threading.Thread):
 
     def run(self):
         """run the server loop"""
-        server = SocketServer.TCPServer( (self.host, self.port),
+        server = socketserver.TCPServer( (self.host, self.port),
                                          MonitorRequestHandler )
         while not self.exit:
             server.handle_request()
