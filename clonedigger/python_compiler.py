@@ -18,10 +18,9 @@ from __future__ import absolute_import
 #   along with Clone Digger.  If not, see <http://www.gnu.org/licenses/>.
 
 import compiler
-import types
-from . import logilab.astng.nodes
 
 from .abstract_syntax_tree import *
+
 
 class PythonNodeLeaf:
     def __init__(self, val):
